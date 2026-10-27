@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Nearby Wi-Fi Report | WLAN Pros Library</title>
+<meta name="description" content="Paste a Wi-Fi scan from lswifi and get a clean report of the networks around you: channels, signal, security and roaming features. Runs in your browser; nothing is uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>/*STYLE*/</style>
+</head>
+<body>
+<header class="site"><div class="in">
+  <a href="https://library.wlanpros.com/" aria-label="WLAN Pros Library home"><!--LOGO--></a>
+  <a href="https://library.wlanpros.com/">Library</a>
+</div></header>
+
+<main class="page">
+  <section class="hero">
+    <p class="eyebrow">Free tool · beta</p>
+    <h1>Nearby Wi-Fi Report</h1>
+    <p class="lede"><a href="https://github.com/joshschmelzle/lswifi">lswifi</a>, a free scanner by Josh Schmelzle, lists every Wi-Fi network your computer can hear on Windows, macOS and Linux. Paste its output here and get a clean report: who is on which channel, how strong, how secure, and what stands out.</p>
+  </section>
+
+  <section class="panel">
+    <ol class="steps">
+      <li><strong>Install lswifi</strong>Needs Python 3.13 or newer: <code>python3 -m pip install lswifi</code>. On a Mac, use the python.org Python and allow it in Location Services.</li>
+      <li><strong>Run this and press Return</strong>
+        <div class="cmd"><code id="command">lswifi --json | pbcopy</code><button type="button" class="small" id="copy-command">Copy</button></div>
+        On Windows, use <code>lswifi --json | clip</code>. The plain table works too.</li>
+      <li><strong>Paste it below</strong>Click in the box and press Command-V (Ctrl-V on Windows).</li>
+    </ol>
+    <label for="input" class="eyebrow">lswifi output</label>
+    <textarea id="input" spellcheck="false" placeholder="Paste the output of lswifi --json, or its table, here"></textarea>
+    <div class="controls">
+      <button type="button" class="primary" id="make">Make report</button>
+      <button type="button" id="example">Try an example</button>
+      <span class="spacer"></span>
+      <label class="toggle"><input type="checkbox" id="redact" checked> Hide identifying details</label>
+      <button type="button" id="print" hidden>Print or save PDF</button>
+    </div>
+    <p class="privacy">Your paste never leaves this page. There is no upload: your browser builds the report. Hiding identifying details replaces network names with numbers and masks the device part of each BSSID, so the report is safe to send to someone helping you.</p>
+    <div id="message" class="message" hidden></div>
+  </section>
+
+  <div id="report" aria-live="polite"></div>
+</main>
+
+<footer class="page-foot"><p>Built by Keith Parsons · CWNE #3. lswifi is Josh Schmelzle's open-source scanner (BSD-3 license); this page reads its output and does not run anything on your computer.</p></footer>
+
+<template id="logo"><!--LOGO--></template>
+<script>/*SCRIPT*/</script>
+<script>
+(function () {
+  const EXAMPLE = /*EXAMPLE*/"";
+  const PRELOADED = /*INPUT*/null;
+  const $ = id => document.getElementById(id);
+  const logo = $("logo").innerHTML;
+
+  function show() {
+    const text = $("input").value;
+    $("message").hidden = true;
+    if (!text.trim()) { $("report").innerHTML = ""; $("print").hidden = true; return; }
+    const report = Lswifi.analyze(Lswifi.parse(text));
+    if (report.empty) {
+      $("report").innerHTML = "";
+      $("print").hidden = true;
+      $("message").innerHTML = "<strong>That doesn't look like lswifi output.</strong> Run <code>lswifi --json | pbcopy</code> and paste again.";
+      $("message").hidden = false;
+      return;
+    }
+    $("report").innerHTML = Lswifi.render(report, { redact: $("redact").checked, logo });
+    $("print").hidden = false;
+  }
+
+  $("make").addEventListener("click", () => { show(); $("report").scrollIntoView({ behavior: "smooth" }); });
+  $("redact").addEventListener("change", show);
+  $("input").addEventListener("paste", () => setTimeout(show, 0));
+  $("example").addEventListener("click", () => { $("input").value = EXAMPLE; show(); $("report").scrollIntoView({ behavior: "smooth" }); });
+  $("print").addEventListener("click", () => window.print());
+  $("copy-command").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("command").textContent); $("copy-command").textContent = "Copied"; }
+    catch (error) { $("copy-command").textContent = "Select and copy"; }
+  });
+  if (PRELOADED) { $("input").value = PRELOADED; $("redact").checked = /*REDACT*/true; show(); }
+})();
+</script>
+</body>
+</html>

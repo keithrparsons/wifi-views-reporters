@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mac Wi-Fi Report | WLAN Pros Library</title>
+<meta name="description" content="Paste the output of sudo wdutil info from a Mac and get a clean, readable Wi-Fi report. Runs in your browser; nothing is uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>/*STYLE*/</style>
+</head>
+<body>
+<header class="site"><div class="in">
+  <a href="https://library.wlanpros.com/" aria-label="WLAN Pros Library home"><!--LOGO--></a>
+  <a href="https://library.wlanpros.com/">Library</a>
+</div></header>
+
+<main class="page">
+  <section class="hero">
+    <p class="eyebrow">Free tool · beta</p>
+    <h1>Mac Wi-Fi Report</h1>
+    <p class="lede">macOS has a built-in Wi-Fi diagnostic, <code>wdutil</code>, that prints everything about your connection in one dense block. Paste it here and get a clean report that explains what each number means and what stands out.</p>
+  </section>
+
+  <section class="panel">
+    <ol class="steps">
+      <li><strong>Open Terminal</strong>Applications, then Utilities, then Terminal.</li>
+      <li><strong>Run this and press Return</strong>
+        <div class="cmd"><code id="command">sudo wdutil info | pbcopy</code><button type="button" class="small" id="copy-command">Copy</button></div>
+        Type your Mac password when asked. Nothing shows as you type. The output goes straight to your clipboard.</li>
+      <li><strong>Paste it below</strong>Click in the box and press Command-V.</li>
+    </ol>
+    <label for="input" class="eyebrow">wdutil info output</label>
+    <textarea id="input" spellcheck="false" placeholder="Paste the output of sudo wdutil info here"></textarea>
+    <div class="controls">
+      <button type="button" class="primary" id="make">Make report</button>
+      <button type="button" id="example">Try an example</button>
+      <span class="spacer"></span>
+      <label class="toggle"><input type="checkbox" id="redact" checked> Hide identifying details</label>
+      <button type="button" id="print" hidden>Print or save PDF</button>
+    </div>
+    <p class="privacy">Your paste never leaves this page. There is no upload: your browser builds the report. Hiding identifying details masks MAC addresses, the network name, IP addresses and Bluetooth device names, so the report is safe to send to someone helping you. macOS itself hides the network name and BSSID in wdutil's output, so those stay hidden either way.</p>
+    <div id="message" class="message" hidden></div>
+  </section>
+
+  <div id="report" aria-live="polite"></div>
+</main>
+
+<footer class="page-foot"><p>Built by Keith Parsons · CWNE #3. <code>wdutil</code> is part of macOS; this page reads its text output and does not run anything on your Mac.</p></footer>
+
+<template id="logo"><!--LOGO--></template>
+<script>/*SCRIPT*/</script>
+<script>
+(function () {
+  const EXAMPLE = /*EXAMPLE*/"";
+  const PRELOADED = /*INPUT*/null;
+  const $ = id => document.getElementById(id);
+  const logo = $("logo").innerHTML;
+
+  function show() {
+    const text = $("input").value;
+    $("message").hidden = true;
+    if (!text.trim()) { $("report").innerHTML = ""; $("print").hidden = true; return; }
+    const report = Wdutil.analyze(Wdutil.parse(text));
+    if (report.empty) {
+      $("report").innerHTML = "";
+      $("print").hidden = true;
+      $("message").innerHTML = "<strong>That doesn't look like wdutil output.</strong> Run <code>sudo wdutil info | pbcopy</code> in Terminal and paste again.";
+      $("message").hidden = false;
+      return;
+    }
+    $("report").innerHTML = Wdutil.render(report, { redact: $("redact").checked, logo });
+    $("print").hidden = false;
+  }
+
+  $("make").addEventListener("click", () => { show(); $("report").scrollIntoView({ behavior: "smooth" }); });
+  $("redact").addEventListener("change", show);
+  $("input").addEventListener("paste", () => setTimeout(show, 0));
+  $("example").addEventListener("click", () => { $("input").value = EXAMPLE; show(); $("report").scrollIntoView({ behavior: "smooth" }); });
+  $("print").addEventListener("click", () => window.print());
+  $("copy-command").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("command").textContent); $("copy-command").textContent = "Copied"; }
+    catch (error) { $("copy-command").textContent = "Select and copy"; }
+  });
+  if (PRELOADED) { $("input").value = PRELOADED; $("redact").checked = /*REDACT*/true; show(); }
+})();
+</script>
+</body>
+</html>

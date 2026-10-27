@@ -1,0 +1,726 @@
+
+There is 1 interface on the system: 
+
+    Name                   : Wi-Fi
+    Description            : Intel(R) Wi-Fi 7 BE200 320MHz
+    GUID                   : 00000000-0000-4000-8000-000000000001
+    Physical address       : 02:00:5e:40:00:01
+    Interface type         : Primary
+    State                  : connected
+    SSID                   : Example-Home
+    AP BSSID               : 02:00:5e:40:00:02
+         Colocated APs:    : 8
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:03,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:04,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:05,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:06,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:07,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:08,  Band: 2.4 GHz,  Channel: 1
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:09,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0a,  Band: 2.4 GHz,  Channel: 1
+    Band                   : 6 GHz
+    Channel                : 117
+    Connected Akm-cipher   : [ akm = 00-0f-ac:08, cipher =  00-0f-ac:04 ]
+    Network type           : Infrastructure
+    Radio type             : 802.11be
+    Authentication         : WPA3-Personal  (H2E)
+    Cipher                 : CCMP
+    Connection mode        : Profile
+    Receive rate (Mbps)    : 1200.8
+    Transmit rate (Mbps)   : 245
+    Signal                 : 90% 
+    Rssi                   : -47
+    Profile                : Example-Home 
+    QoS MSCS Configured         : 0
+    QoS Map Configured          : 0
+    QoS Map Allowed by Policy   : 0
+
+
+Interface name: Wi-Fi
+
+    Driver                    : Intel(R) Wi-Fi 7 BE200 320MHz
+    Vendor                    : Intel Corporation
+    Provider                  : Intel
+    Date                      : 6/12/2025
+    Version                   : 23.150.0.4
+    INF file                  : oem2.inf
+    Type                      : Native Wi-Fi Driver
+    Radio types supported     : 802.11b 802.11g 802.11n 802.11a 802.11ac 802.11ax 802.11be
+    FIPS 140 mode supported   : Yes
+    802.11w Management Frame Protection supported : Yes
+    Hosted network supported  : No
+    Authentication and cipher supported in infrastructure mode:
+                                Open             None
+                                Open             WEP-40bit
+                                Open             WEP-104bit
+                                Open             WEP
+                                WPA-Enterprise   TKIP
+                                WPA-Enterprise   CCMP
+                                WPA-Personal     TKIP
+                                WPA-Personal     CCMP
+                                WPA2-Enterprise  TKIP
+                                WPA2-Enterprise  CCMP
+                                WPA2-Personal    TKIP
+                                WPA2-Personal    CCMP
+                                Open             Vendor defined
+                                WPA3-Personal    CCMP
+                                WPA3-Personal    GCMP-256
+                                Vendor defined   Vendor defined
+                                WPA3-Enterprise 192 Bits GCMP-256
+                                OWE              CCMP
+                                OWE              GCMP-256
+                                WPA3-Enterprise  CCMP
+    Number of supported bands : 3
+                                2.4 GHz [ 2412 MHz - 2472 MHz]
+                                5 GHz [ 5180 MHz - 5885 MHz]
+                                6 GHz [ 5955 MHz - 7115 MHz]
+    IHV service present       : Yes
+    IHV adapter OUI           : [00 00 00], type: [00]
+    IHV extensibility DLL path: C:\WINDOWS\System32\DriverStore\FileRepository\netwtw6e.inf_amd64_c3785d6f1e6d5b0e\IntelIHVRouter16.dll
+    IHV UI extensibility ClSID: {00000000-0000-4000-8000-000000000001}
+    IHV diagnostics CLSID     : {00000000-0000-4000-8000-000000000001}
+    Wireless Display Supported: Yes (Graphics Driver: Yes, Wi-Fi Driver: Yes)
+
+ 
+Interface name : Wi-Fi 
+There are 8 networks currently visible. 
+
+SSID 1 : Vacuum_0001
+    Network type            : Infrastructure
+    Authentication          : Open
+    Encryption              : None 
+    BSSID 1                 : 02:00:5e:40:00:0b
+         Signal             : 65%  
+         Radio type         : 802.11g
+         Band               : 2.4 GHz
+         Channel            : 1 
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 2 : Example-Home
+    Network type            : Infrastructure
+    Authentication          : WPA3-Personal
+    Encryption              : CCMP 
+    BSSID 1                 : 02:00:5e:40:00:02
+         Signal             : 90%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 117 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         4
+             Channel Utilization:        12 (4 %)
+             Medium Available Capacity:  29779 (952928 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 8
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:03,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:04,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:05,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:06,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:07,  Band: 2.4 GHz,  Channel: 1
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:09,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:08,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0a,  Band: 2.4 GHz,  Channel: 1
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+         MFP Required       : 1
+    BSSID 2                 : 02:00:5e:40:00:0d
+         Signal             : 50%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 52 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         1
+             Channel Utilization:        5 (1 %)
+             Medium Available Capacity:  30637 (980384 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0e
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0f,  Band: 6 GHz,  Channel: 69
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:10,  Band: 6 GHz,  Channel: 69
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:11,  Band: 6 GHz,  Channel: 69
+         Basic rates (Mbps) : 24
+         Other rates (Mbps) : 36 48 54
+    BSSID 3                 : 02:00:5e:40:00:11
+         Signal             : 81%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 69 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        7 (2 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0e
+         Colocated APs:    : 4
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:12,  Band: 5 GHz,  Channel: 52
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0d,  Band: 5 GHz,  Channel: 52
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:13,  Band: 5 GHz,  Channel: 52
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:14,  Band: 5 GHz,  Channel: 52
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 4                 : 02:00:5e:40:00:15
+         Signal             : 29%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 100 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        4 (1 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:16
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:17,  Band: 6 GHz,  Channel: 165
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:18,  Band: 6 GHz,  Channel: 165
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:19,  Band: 6 GHz,  Channel: 165
+         Basic rates (Mbps) : 24
+         Other rates (Mbps) : 36 48 54
+    BSSID 5                 : 02:00:5e:40:00:1a
+         Signal             : 57%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 213 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        7 (2 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:1b
+         Colocated APs:    : 7
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1c,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1d,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1e,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1f,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:20,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:21,  Band: 2.4 GHz,  Channel: 1
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:22,  Band: 5 GHz,  Channel: 60
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 6                 : 02:00:5e:40:00:23
+         Signal             : 33%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 132 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         1
+             Channel Utilization:        6 (2 %)
+             Medium Available Capacity:  30514 (976448 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:24
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:25,  Band: 6 GHz,  Channel: 37
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:26,  Band: 6 GHz,  Channel: 37
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:27,  Band: 6 GHz,  Channel: 37
+         Basic rates (Mbps) : 24
+         Other rates (Mbps) : 36 48 54
+    BSSID 7                 : 02:00:5e:40:00:28
+         Signal             : 53%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 149 
+         Details            :  (H2E supported) 
+         Bss Load:
+             Connected Stations:         3
+             Channel Utilization:        22 (8 %)
+             Medium Available Capacity:  28553 (913696 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         Basic rates (Mbps) : 24
+         Other rates (Mbps) : 36 48 54
+    BSSID 8                 : 02:00:5e:40:00:29
+         Signal             : 57%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 36 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         2
+             Channel Utilization:        12 (4 %)
+             Medium Available Capacity:  29779 (952928 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:2a
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2b,  Band: 6 GHz,  Channel: 21
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2c,  Band: 6 GHz,  Channel: 21
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2d,  Band: 6 GHz,  Channel: 21
+         Basic rates (Mbps) : 24
+         Other rates (Mbps) : 36 48 54
+    BSSID 9                 : 02:00:5e:40:00:04
+         Signal             : 87%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 108 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         3
+             Channel Utilization:        6 (2 %)
+             Medium Available Capacity:  30514 (976448 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 4
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2e,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2f,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:02,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:30,  Band: 6 GHz,  Channel: 117
+         Basic rates (Mbps) : 24
+         Other rates (Mbps) : 36 48 54
+    BSSID 10                 : 02:00:5e:40:00:1d
+         Signal             : 40%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 60 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        4 (1 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:1b
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:31,  Band: 6 GHz,  Channel: 213
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:32,  Band: 6 GHz,  Channel: 213
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1a,  Band: 6 GHz,  Channel: 213
+         Basic rates (Mbps) : 24
+         Other rates (Mbps) : 36 48 54
+
+SSID 3 : Example-Guest
+    Network type            : Infrastructure
+    Authentication          : Open
+    Encryption              : None 
+    BSSID 1                 : 02:00:5e:40:00:0a
+         Signal             : 81%  
+         Radio type         : 802.11be
+         Band               : 2.4 GHz
+         Channel            : 1 
+         Details            :  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        153 (60 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 4
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2e,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2f,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:02,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:30,  Band: 6 GHz,  Channel: 117
+         Basic rates (Mbps) : 11
+         Other rates (Mbps) : 12 18 24 36 48 54
+    BSSID 2                 : 02:00:5e:40:00:33
+         Signal             : 62%  
+         Radio type         : 802.11be
+         Band               : 2.4 GHz
+         Channel            : 1 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        162 (63 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         Basic rates (Mbps) : 11
+         Other rates (Mbps) : 12 18 24 36 48 54
+    BSSID 3                 : 02:00:5e:40:00:34
+         Signal             : 62%  
+         Radio type         : 802.11be
+         Band               : 2.4 GHz
+         Channel            : 11 
+         Details            :  (MLD) 
+         Bss Load:
+             Connected Stations:         1
+             Channel Utilization:        96 (37 %)
+             Medium Available Capacity:  19485 (623520 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:2a
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2b,  Band: 6 GHz,  Channel: 21
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2c,  Band: 6 GHz,  Channel: 21
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2d,  Band: 6 GHz,  Channel: 21
+         Basic rates (Mbps) : 11
+         Other rates (Mbps) : 12 18 24 36 48 54
+
+SSID 4 : 
+    Network type            : Infrastructure
+    Authentication          : WPA3-Personal
+    Encryption              : CCMP 
+    BSSID 1                 : 02:00:5e:40:00:22
+         Signal             : 50%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 60 
+         Details            :  (H2E Not supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        4 (1 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:1b
+         Colocated APs:    : 3
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:31,  Band: 6 GHz,  Channel: 213
+            MldID : 0, LinkID: 1, BSSID: 02:00:5e:40:00:32,  Band: 6 GHz,  Channel: 213
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:1a,  Band: 6 GHz,  Channel: 213
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 2                 : 02:00:5e:40:00:2f
+         Signal             : 90%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 117 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        12 (4 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 8
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:03,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:04,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:05,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:06,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:07,  Band: 2.4 GHz,  Channel: 1
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:09,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:08,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0a,  Band: 2.4 GHz,  Channel: 1
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 3                 : 02:00:5e:40:00:2e
+         Signal             : 90%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 117 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        12 (4 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 7
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:09,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:07,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:06,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:03,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:04,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:08,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0a,  Band: 2.4 GHz,  Channel: 1
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 4                 : 02:00:5e:40:00:08
+         Signal             : 70%  
+         Radio type         : 802.11be
+         Band               : 2.4 GHz
+         Channel            : 1 
+         Details            :  (H2E Not supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        148 (58 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 4
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2e,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2f,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:02,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:30,  Band: 6 GHz,  Channel: 117
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+    BSSID 5                 : 02:00:5e:40:00:12
+         Signal             : 40%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 52 
+         Details            :  (H2E Not supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        5 (1 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0e
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0f,  Band: 6 GHz,  Channel: 69
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:10,  Band: 6 GHz,  Channel: 69
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:11,  Band: 6 GHz,  Channel: 69
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 6                 : 02:00:5e:40:00:14
+         Signal             : 40%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 52 
+         Details            :  (H2E Not supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        5 (1 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0e
+         Colocated APs:    : 3
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:0f,  Band: 6 GHz,  Channel: 69
+            MldID : 0, LinkID: 1, BSSID: 02:00:5e:40:00:10,  Band: 6 GHz,  Channel: 69
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:11,  Band: 6 GHz,  Channel: 69
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 7                 : 02:00:5e:40:00:31
+         Signal             : 57%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 213 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        7 (2 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:1b
+         Colocated APs:    : 7
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1c,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1d,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1e,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1f,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:20,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:21,  Band: 2.4 GHz,  Channel: 1
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:22,  Band: 5 GHz,  Channel: 60
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 8                 : 02:00:5e:40:00:0f
+         Signal             : 81%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 69 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        7 (2 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0e
+         Colocated APs:    : 4
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:12,  Band: 5 GHz,  Channel: 52
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0d,  Band: 5 GHz,  Channel: 52
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:13,  Band: 5 GHz,  Channel: 52
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:14,  Band: 5 GHz,  Channel: 52
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 9                 : 02:00:5e:40:00:10
+         Signal             : 81%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 69 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        7 (2 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0e
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:14,  Band: 5 GHz,  Channel: 52
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:12,  Band: 5 GHz,  Channel: 52
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0d,  Band: 5 GHz,  Channel: 52
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 10                 : 02:00:5e:40:00:1c
+         Signal             : 50%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 60 
+         Details            :  (H2E Not supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        4 (1 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:1b
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:31,  Band: 6 GHz,  Channel: 213
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:32,  Band: 6 GHz,  Channel: 213
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1a,  Band: 6 GHz,  Channel: 213
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 11                 : 02:00:5e:40:00:32
+         Signal             : 57%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 213 
+         Details            :  (H2E supported)  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        7 (2 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:1b
+         Colocated APs:    : 6
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:22,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1f,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1c,  Band: 5 GHz,  Channel: 60
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:20,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:21,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:1d,  Band: 5 GHz,  Channel: 60
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+
+SSID 5 : Example-IoT
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP 
+    BSSID 1                 : 02:00:5e:40:00:07
+         Signal             : 80%  
+         Radio type         : 802.11be
+         Band               : 2.4 GHz
+         Channel            : 1 
+         Details            :  (MLD) 
+         Bss Load:
+             Connected Stations:         3
+             Channel Utilization:        153 (60 %)
+             Medium Available Capacity:  12500 (400000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 4
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2e,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2f,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:02,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:30,  Band: 6 GHz,  Channel: 117
+         Basic rates (Mbps) : 12 24
+         Other rates (Mbps) : 18 36 48 54
+    BSSID 2                 : 02:00:5e:40:00:35
+         Signal             : 65%  
+         Radio type         : 802.11be
+         Band               : 2.4 GHz
+         Channel            : 1 
+         Bss Load:
+             Connected Stations:         1
+             Channel Utilization:        170 (66 %)
+             Medium Available Capacity:  10416 (333312 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         Basic rates (Mbps) : 12 24
+         Other rates (Mbps) : 18 36 48 54
+    BSSID 3                 : 02:00:5e:40:00:36
+         Signal             : 62%  
+         Radio type         : 802.11be
+         Band               : 2.4 GHz
+         Channel            : 11 
+         Details            :  (MLD) 
+         Bss Load:
+             Connected Stations:         10
+             Channel Utilization:        96 (37 %)
+             Medium Available Capacity:  19485 (623520 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:2a
+         Colocated APs:    : 3
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2b,  Band: 6 GHz,  Channel: 21
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2c,  Band: 6 GHz,  Channel: 21
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2d,  Band: 6 GHz,  Channel: 21
+         Basic rates (Mbps) : 12 24
+         Other rates (Mbps) : 18 36 48 54
+
+SSID 6 : Example-Lab
+    Network type            : Infrastructure
+    Authentication          : OWE
+    Encryption              : CCMP 
+    BSSID 1                 : 02:00:5e:40:00:30
+         Signal             : 90%  
+         Radio type         : 802.11be
+         Band               : 6 GHz
+         Channel            : 117 
+         Details            :  (MLD) 
+         Bss Load:
+             Connected Stations:         0
+             Channel Utilization:        12 (4 %)
+             Medium Available Capacity:  31250 (1000000 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 8
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:03,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:04,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:05,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:06,  Band: 5 GHz,  Channel: 108
+            MldID : 255, LinkID: 15, BSSID: 02:00:5e:40:00:09,  Band: 5 GHz,  Channel: 108
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:08,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:07,  Band: 2.4 GHz,  Channel: 1
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:0a,  Band: 2.4 GHz,  Channel: 1
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+    BSSID 2                 : 02:00:5e:40:00:06
+         Signal             : 87%  
+         Radio type         : 802.11be
+         Band               : 5 GHz
+         Channel            : 108 
+         Details            :  (MLD) 
+         Bss Load:
+             Connected Stations:         1
+             Channel Utilization:        6 (2 %)
+             Medium Available Capacity:  30514 (976448 us/s)
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         MLD Address        : 02:00:5e:40:00:0c
+         Colocated APs:    : 4
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2e,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:2f,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:02,  Band: 6 GHz,  Channel: 117
+            MldID : 0, LinkID: 0, BSSID: 02:00:5e:40:00:30,  Band: 6 GHz,  Channel: 117
+         Basic rates (Mbps) : 12 24
+         Other rates (Mbps) : 18 36 48 54
+
+SSID 7 : DIRECT-xx-Printer
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP 
+    BSSID 1                 : 02:00:5e:40:00:37
+         Signal             : 92%  
+         Radio type         : 802.11n
+         Band               : 2.4 GHz
+         Channel            : 6 
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         Basic rates (Mbps) : 6 12 24
+         Other rates (Mbps) : 9 18 36 48 54
+
+SSID 8 : Example-Hotspot
+    Network type            : Infrastructure
+    Authentication          : Open
+    Encryption              : None 
+    BSSID 1                 : 02:00:5e:40:00:38
+         Signal             : 85%  
+         Radio type         : 802.11n
+         Band               : 2.4 GHz
+         Channel            : 6 
+         QoS MSCS Supported    : 0
+         QoS Map Supported     : 0
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+

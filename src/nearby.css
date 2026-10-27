@@ -1,0 +1,26 @@
+
+/* ---------- Nearby Wi-Fi report additions to the Mac Wi-Fi Report look */
+.wr h3.band { margin: var(--space-md) 0 var(--space-xs); font: 500 13px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--green-ink); }
+.bars { display: grid; gap: var(--space-xxs); }
+.bar-row { display: grid; grid-template-columns: 48px minmax(80px, 1fr) minmax(0, 1.4fr); gap: var(--space-sm); align-items: center; }
+.bar-row .ch { font-size: 15px; color: var(--heading); text-align: right; }
+.track { height: 18px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.bar { display: block; height: 100%; background: var(--charcoal); border-right: 4px solid var(--lime); }
+.bar-note { font-size: 14px; }
+.rssi { font-family: var(--mono); font-size: 14px; font-weight: 500; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+.rssi.good { background: var(--good-fill); color: var(--green-ink); }
+.rssi.fair { background: var(--warn-fill); color: var(--warn); }
+.rssi.weak { background: #FBE9E7; color: #9A2B1C; }
+.list.bss td, .list.bss th { font-size: 14px; padding-right: var(--space-xs); }
+.wr section > table.list { display: block; overflow-x: auto; }
+.wr .tiles { padding: 0 !important; }
+
+@media (max-width: 720px) {
+  .bar-row { grid-template-columns: 36px 1fr; }
+  .bar-note { grid-column: 2; }
+}
+/* The base sheet hides two table columns on phones; these tables scroll sideways instead. */
+@media (max-width: 720px) {
+  .wr .list th, .wr .list td { display: table-cell; }
+}
+.list.bss td { white-space: nowrap; }

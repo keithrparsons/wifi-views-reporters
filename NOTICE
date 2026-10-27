@@ -1,0 +1,14 @@
+Wi-Fi Views Reporters
+Copyright 2026 Keith Parsons / WLAN Pros
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The WLAN Pros name and logo are trademarks of WLAN Pros. The license does not
+grant permission to use them (Apache License 2.0, section 6). If you share a
+changed version, remove the logo (src/wlanpros-logo-white.svg) and the WLAN Pros
+branding from the pages, and don't present your version as a WLAN Pros tool.
+
+The Nearby Wi-Fi Report reads the output of lswifi, Josh Schmelzle's open-source
+Wi-Fi scanner (BSD-3-Clause, https://github.com/joshschmelzle/lswifi). lswifi
+itself is not included here. wdutil is part of macOS and netsh is part of
+Windows; these pages read their text output and run nothing on your computer.

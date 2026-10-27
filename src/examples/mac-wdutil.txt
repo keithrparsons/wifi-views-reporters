@@ -1,0 +1,209 @@
+————————————————————————————————————————————————————————————————————
+NETWORK
+————————————————————————————————————————————————————————————————————
+    Primary IPv4         : en0 (Wi-Fi / 00000000-1111-2222-3333-444444444444)
+                         : 192.168.1.116
+    Primary IPv6         : None
+    DNS Addresses        : 100.100.100.100
+                         : fd7a:115c:a1e0::53
+    Apple                : Reachable
+————————————————————————————————————————————————————————————————————
+WIFI
+————————————————————————————————————————————————————————————————————
+    MAC Address          : 02:00:5e:20:00:01 (hw=02:00:5e:20:00:01)
+    Interface Name       : en0
+    Power                : On [On]
+    Op Mode              : STA
+    SSID                 : Example-Home
+    BSSID                : 02:00:5e:30:00:01
+    RSSI                 : -50 dBm
+    CCA                  : 3 %
+    Noise                : -98 dBm
+    Tx Rate              : 576.0 Mbps
+    Security             : WPA3 Personal
+    PHY Mode             : ? (0x200)
+    MCS Index            : 6
+    Guard Interval       : 800
+    NSS                  : 2
+    Channel              : 6g117/80
+    Country Code         : US
+    Scan Cache Count     : 115
+    NetworkServiceID     : 00000000-1111-2222-3333-444444444444
+    IPv4 Config Method   : DHCP
+    IPv4 Address         : 192.168.1.116
+    IPv4 Router          : 192.168.1.1
+    IPv6 Config Method   : Automatic
+    IPv6 Address         : fd00:db8:1:0:1111:2222:3333:4444
+    IPv6 Router          : None
+    DNS                  : 192.168.1.1
+    BTC Mode             : Off
+    Desense              :
+    Chain Ack            : []
+    BTC Profile 2.4GHz   : Disabled
+    BTC Profile 5GHz     : Disabled
+    Sniffer Supported    : YES
+    Supports 6e          : Yes
+    Supported Channels   : 2g1/20,2g2/20,2g3/20,2g4/20,2g5/20,2g6/20,2g7/20,2g8/20,2g9/20,2g10/20,2g11/20,2g12/20,2g13/20,5g36/20,5g40/20,5g44/20,5g48/20,5g52/20,5g56/20,5g60/20,5g64/20,5g100/20,5g104/20,5g108/20,5g112/20,5g116/20,5g120/20,5g124/20,5g128/20,5g132/20,5g136/20,5g140/20,5g144/20,5g149/20,5g153/20,5g157/20,5g161/20,5g165/20,5g36/40,5g40/40,5g44/40,5g48/40,5g52/40,5g56/40,5g60/40,5g64/40,5g100/40,5g104/40,5g108/40,5g112/40,5g116/40,5g120/40,5g124/40,5g128/40,5g132/40,5g136/40,5g140/40,5g144/40,5g149/40,5g153/40,5g157/40,5g161/40,5g36/80,5g40/80,5g44/80,5g48/80,5g52/80,5g56/80,5g60/80,5g64/80,5g100/80,5g104/80,5g108/80,5g112/80,5g116/80,5g120/80,5g124/80,5g128/80,5g132/80,5g136/80,5g140/80,5g144/80,5g149/80,5g153/80,5g157/80,5g161/80,5g36/160,5g40/160,5g44/160,5g48/160,5g52/160,5g56/160,5g60/160,5g64/160,5g100/160,5g104/160,5g108/160,5g112/160,5g116/160,5g120/160,5g124/160,5g128/160,6g1/20,6g5/20,6g9/20,6g13/20,6g17/20,6g21/20,6g25/20,6g29/20,6g33/20,6g37/20,6g41/20,6g45/20,6g49/20,6g53/20,6g57/20,6g61/20,6g65/20,6g69/20,6g73/20,6g77/20,6g81/20,6g85/20,6g89/20,6g93/20,6g97/20,6g101/20,6g105/20,6g109/20,6g113/20,6g117/20,6g121/20,6g125/20,6g129/20,6g133/20,6g137/20,6g141/20,6g145/20,6g149/20,6g153/20,6g157/20,6g161/20,6g165/20,6g169/20,6g173/20,6g177/20,6g181/20,6g185/20,6g189/20,6g193/20,6g197/20,6g201/20,6g205/20,6g209/20,6g213/20,6g217/20,6g221/20,6g225/20,6g229/20,6g233/20,6g1/40,6g5/40,6g9/40,6g13/40,6g17/40,6g21/40,6g25/40,6g29/40,6g33/40,6g37/40,6g41/40,6g45/40,6g49/40,6g53/40,6g57/40,6g61/40,6g65/40,6g69/40,6g73/40,6g77/40,6g81/40,6g85/40,6g89/40,6g93/40,6g97/40,6g101/40,6g105/40,6g109/40,6g113/40,6g117/40,6g121/40,6g125/40,6g129/40,6g133/40,6g137/40,6g141/40,6g145/40,6g149/40,6g153/40,6g157/40,6g161/40,6g165/40,6g169/40,6g173/40,6g177/40,6g181/40,6g185/40,6g189/40,6g193/40,6g197/40,6g201/40,6g205/40,6g209/40,6g213/40,6g217/40,6g221/40,6g225/40,6g229/40,6g1/80,6g5/80,6g9/80,6g13/80,6g17/80,6g21/80,6g25/80,6g29/80,6g33/80,6g37/80,6g41/80,6g45/80,6g49/80,6g53/80,6g57/80,6g61/80,6g65/80,6g69/80,6g73/80,6g77/80,6g81/80,6g85/80,6g89/80,6g93/80,6g97/80,6g101/80,6g105/80,6g109/80,6g113/80,6g117/80,6g121/80,6g125/80,6g129/80,6g133/80,6g137/80,6g141/80,6g145/80,6g149/80,6g153/80,6g157/80,6g161/80,6g165/80,6g169/80,6g173/80,6g177/80,6g181/80,6g185/80,6g189/80,6g193/80,6g197/80,6g201/80,6g205/80,6g209/80,6g213/80,6g217/80,6g221/80,6g1/160,6g5/160,6g9/160,6g13/160,6g17/160,6g21/160,6g25/160,6g29/160,6g33/160,6g37/160,6g41/160,6g45/160,6g49/160,6g53/160,6g57/160,6g61/160,6g65/160,6g69/160,6g73/160,6g77/160,6g81/160,6g85/160,6g89/160,6g93/160,6g97/160,6g101/160,6g105/160,6g109/160,6g113/160,6g117/160,6g121/160,6g125/160,6g129/160,6g133/160,6g137/160,6g141/160,6g145/160,6g149/160,6g153/160,6g157/160,6g161/160,6g165/160,6g169/160,6g173/160,6g177/160,6g181/160,6g185/160,6g189/160,6g193/160,6g197/160,6g201/160,6g205/160,6g209/160,6g213/160,6g217/160,6g221/160
+————————————————————————————————————————————————————————————————————
+BLUETOOTH
+————————————————————————————————————————————————————————————————————
+    Power                : On
+    Address              : 02:00:5e:10:00:01
+    Discoverable         : No
+    Connectable          : Yes
+    Scanning             : No
+    Devices              : 15 (paired=7 cloud=7 connected=2)
+
+    Studio iMac
+    Address          : 02:00:5e:10:00:02
+    Paired           : No
+    CloudPaired      : Yes
+    Connected        : No
+
+    Magic Keyboard with Touch ID
+    Address          : 02:00:5e:10:00:03
+    Paired           : Yes
+    CloudPaired      : No
+    Connected        : Yes
+    Type             : Misc - 0x0
+    RSSI             : 0 dBm
+    Manufacturer     : Ericsson (0x0, 0x00)
+    Role             : None
+    Conn Mode        : Active
+    Conn Interval    : 0
+    AFH Map          : (null)
+    LE               : No
+    Apple            : Yes
+
+    Magic Mouse
+    Address          : 02:00:5e:10:00:04
+    Paired           : Yes
+    CloudPaired      : No
+    Connected        : Yes
+    Type             : Misc - 0x0
+    RSSI             : 0 dBm
+    Manufacturer     : Ericsson (0x0, 0x00)
+    Role             : None
+    Conn Mode        : Active
+    Conn Interval    : 0
+    AFH Map          : (null)
+    LE               : No
+    Apple            : Yes
+
+    AirPods Max
+    Address          : 02:00:5e:10:00:05
+    Paired           : Yes
+    CloudPaired      : No
+    Connected        : No
+
+    Alex‚Äôs iPhone
+    Address          : 02:00:5e:10:00:06
+    Paired           : No
+    CloudPaired      : Yes
+    Connected        : No
+
+    Office Mac mini
+    Address          : 02:00:5e:10:00:07
+    Paired           : No
+    CloudPaired      : Yes
+    Connected        : No
+
+    AirPods Pro
+    Address          : 02:00:5e:10:00:08
+    Paired           : Yes
+    CloudPaired      : No
+    Connected        : No
+
+    iPad Air
+    Address          : 02:00:5e:10:00:09
+    Paired           : No
+    CloudPaired      : Yes
+    Connected        : No
+
+    MacBook Air
+    Address          : 02:00:5e:10:00:0a
+    Paired           : No
+    CloudPaired      : Yes
+    Connected        : No
+
+    Spare AirPods Pro
+    Address          : 02:00:5e:10:00:0b
+    Paired           : Yes
+    CloudPaired      : No
+    Connected        : No
+
+    AirPods Pro (old)
+    Address          : 02:00:5e:10:00:0c
+    Paired           : Yes
+    CloudPaired      : No
+    Connected        : No
+
+    Alex‚Äôs Apple¬†Watch
+    Address          : 02:00:5e:10:00:0d
+    Paired           : No
+    CloudPaired      : Yes
+    Connected        : No
+
+    Travel Mouse
+    Address          : 02:00:5e:10:00:0e
+    Paired           : Yes
+    CloudPaired      : No
+    Connected        : No
+
+    Presenter Remote
+    Address          : 02:00:5e:10:00:0f
+    Paired           : No
+    CloudPaired      : No
+    Connected        : No
+
+    Living Room Mac
+    Address          : 02:00:5e:10:00:10
+    Paired           : No
+    CloudPaired      : Yes
+    Connected        : No
+
+————————————————————————————————————————————————————————————————————
+AWDL
+————————————————————————————————————————————————————————————————————
+    MAC Address            : 02:00:5e:10:00:11 (hw=02:00:5e:10:00:12)
+    AirDrop Disc Mode      : Everyone
+    AWDL Enabled           : Yes
+    Interface Name         : awdl0
+    Power                  : On
+    IPv6 Address           : fe80::1:2ff:fe00:1
+    Schedule State         : Infra Priority
+    Channel Sequence       : 6 6 149++ 0 0 0 0 6 6 6 149++ 6 0 0 0 6
+    Op Mode                : AUTO
+    Real Time Mode         : No
+    Sync State             : Master
+    Sync Params
+      AW Period            : 16
+      AW Length            : 16
+      Extension Length     : 16
+      Sync Frame Period    : 110 (Non-Election Master=0)
+    Master Channel         : 6/0
+    Election Params
+      Election ID          : 0
+      Self Metric          : 515
+      Flags                : 0x0
+      Top Master Metric    : 515
+      Distance From Top    : 0
+      Top Master           : 02:00:5e:10:00:13
+————————————————————————————————————————————————————————————————————
+POWER
+————————————————————————————————————————————————————————————————————
+    Power Source         : Battery
+    Battery Warning Level: None
+    System Caps          : FullWake:cpu disk net aud vid
+————————————————————————————————————————————————————————————————————
+WIFI FAULTS LAST HOUR
+————————————————————————————————————————————————————————————————————
+    None
+————————————————————————————————————————————————————————————————————
+WIFI RECOVERIES LAST HOUR
+————————————————————————————————————————————————————————————————————
+    None
+————————————————————————————————————————————————————————————————————
+WIFI LINK TESTS LAST HOUR
+————————————————————————————————————————————————————————————————————
+    None

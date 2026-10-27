@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Nearby Wi-Fi Report | WLAN Pros Library</title>
+<meta name="description" content="Paste a Wi-Fi scan from lswifi and get a clean report of the networks around you: channels, signal, security and roaming features. Runs in your browser; nothing is uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>/* WLAN Pros brand tokens. The report is a document people print and send,
+   so it stays on the light canvas in every color scheme. */
+:root {
+  color-scheme: light;
+  --lime: #A1CC3A;            /* --color-primary: structural accents only, never text on light */
+  --charcoal: #1A1A1A;        /* --color-secondary */
+  --accent: #7A9E26;          /* --color-accent */
+  --green-ink: #2F5E00;       /* --eyebrow-ink: small labels and links on light */
+  --canvas: #FFFFFF;
+  --surface: #F7F7F5;
+  --rule: #E5E5E5;
+  --body: #444444;
+  --heading: #111111;
+  --muted-dark: #9C9C9C;      /* muted text on charcoal only */
+  --warn: #8A5A00;
+  --warn-fill: #FCF3E2;
+  --good-fill: #EEF5DF;
+  --space-xxs: 4px; --space-xs: 8px; --space-sm: 16px; --space-md: 24px; --space-lg: 32px; --space-xl: 48px;
+  --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; background: var(--surface); color: var(--body); font: 16px/1.6 var(--sans); }
+a { color: var(--green-ink); }
+code, .mono { font-family: var(--mono); }
+
+/* ---------- page chrome */
+.site { background: var(--charcoal); border-top: 6px solid var(--lime); }
+.site .in { max-width: 1040px; margin: 0 auto; padding: var(--space-sm); display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); }
+.site svg { height: 40px; width: auto; display: block; }
+.site a { color: #fff; text-decoration: none; font-weight: 500; font-size: 15px; }
+.site a:hover { color: var(--lime); }
+.page { max-width: 1040px; margin: 0 auto; padding: var(--space-lg) var(--space-sm) var(--space-xl); }
+.hero h1 { font-size: 36px; line-height: 1.2; color: var(--heading); margin: 0 0 var(--space-xs); font-weight: 700; }
+.hero .lede { font-size: 18px; max-width: 720px; margin: 0 0 var(--space-md); }
+.eyebrow { font: 500 13px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--green-ink); margin: 0 0 var(--space-xxs); }
+.panel { background: var(--canvas); border: 1px solid var(--rule); border-radius: 12px; padding: var(--space-md); }
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 var(--space-md); display: grid; gap: var(--space-sm); grid-template-columns: 1fr 1.6fr 1fr; }
+.steps li { counter-increment: step; position: relative; padding-left: 40px; min-width: 0; }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--charcoal); color: var(--lime); font: 500 14px/28px var(--mono); text-align: center; }
+.steps strong { color: var(--heading); display: block; }
+.cmd { display: flex; align-items: center; gap: var(--space-xs); background: var(--charcoal); color: #fff; border-radius: 8px; padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-sm); margin-top: var(--space-xxs); }
+.cmd code { flex: 1; font-size: 15px; overflow-x: auto; white-space: nowrap; }
+.cmd button { flex: none; }
+textarea { width: 100%; min-height: 180px; resize: vertical; font: 13px/1.5 var(--mono); color: var(--heading); background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: var(--space-sm); }
+textarea:focus, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); margin-top: var(--space-sm); }
+.controls .spacer { flex: 1; }
+label.toggle { display: inline-flex; align-items: center; gap: var(--space-xs); font-weight: 500; color: var(--heading); }
+label.toggle input { width: 18px; height: 18px; accent-color: var(--green-ink); }
+button { font: 600 15px/1 var(--sans); border-radius: 8px; padding: 12px var(--space-sm); cursor: pointer; border: 1px solid var(--charcoal); background: var(--canvas); color: var(--charcoal); }
+button.primary { background: var(--charcoal); color: #fff; }
+button.primary:hover { background: #000; }
+button.small { padding: var(--space-xs) 12px; font-size: 13px; background: transparent; color: #fff; border-color: #555; }
+.privacy { font-size: 14px; margin: var(--space-sm) 0 0; display: flex; gap: var(--space-xs); align-items: flex-start; }
+.privacy::before { content: ""; flex: none; width: 6px; align-self: stretch; background: var(--green-ink); border-radius: 3px; }
+.message { margin-top: var(--space-md); padding: var(--space-sm); border-radius: 8px; background: var(--warn-fill); color: var(--heading); }
+.message strong { color: var(--warn); }
+#report { margin-top: var(--space-xl); }
+.page-foot { max-width: 1040px; margin: 0 auto; padding: 0 var(--space-sm) var(--space-xl); font-size: 14px; }
+
+/* ---------- the report */
+.wr { background: var(--canvas); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; color: var(--body); }
+.wr > section, .wr .pair { padding: 0 var(--space-lg); }
+.wr h2 { font-size: 22px; line-height: 1.4; color: var(--heading); margin: var(--space-xl) 0 var(--space-sm); font-weight: 600; padding-bottom: var(--space-xs); border-bottom: 2px solid var(--charcoal); }
+.wr h3 { font-size: 16px; color: var(--heading); margin: 0; font-weight: 600; }
+.wr-head { background: var(--charcoal); color: #fff; padding: var(--space-md) var(--space-lg); display: grid; grid-template-columns: auto 1fr; gap: var(--space-sm) var(--space-lg); align-items: center; border-top: 8px solid var(--lime); }
+.wr-logo svg { height: 56px; width: auto; display: block; }
+.wr-title .eyebrow { color: var(--lime); }
+.wr-title h1 { margin: 0; font-size: 28px; line-height: 1.3; font-weight: 700; color: #fff; }
+.wr-meta { grid-column: 1 / -1; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-lg); padding-top: var(--space-sm); border-top: 1px solid #333; }
+.wr-meta dt { font: 500 13px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted-dark); }
+.wr-meta dd { margin: 0; color: #fff; font-weight: 500; }
+.wr-meta code { color: var(--lime); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--rule); border-bottom: 1px solid var(--rule); padding: 0 !important; }
+.tile { background: var(--canvas); padding: var(--space-md) var(--space-md) var(--space-sm); border-top: 4px solid var(--lime); }
+.tile p { margin: 0; }
+.tile .label { font: 500 13px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--green-ink); }
+.tile .value { font: 500 22px/1.3 var(--mono); color: var(--heading); margin: var(--space-xxs) 0; letter-spacing: -.5px; }
+.tile .sub { font-size: 13px; }
+.notice { margin: var(--space-lg); padding: var(--space-sm) var(--space-md) !important; background: var(--warn-fill); border-left: 6px solid var(--warn); color: var(--heading); }
+.findings { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-xs); }
+.finding { display: grid; grid-template-columns: 112px 1fr; gap: var(--space-sm); align-items: start; padding: var(--space-sm); border: 1px solid var(--rule); border-left-width: 6px; border-radius: 8px; }
+.finding p { margin: var(--space-xxs) 0 0; }
+.finding .chip { font: 500 12px/1.5 var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: var(--space-xxs) var(--space-xs); border-radius: 4px; text-align: center; }
+.finding.good { border-left-color: var(--green-ink); }
+.finding.good .chip { background: var(--good-fill); color: var(--green-ink); }
+.finding.watch { border-left-color: var(--warn); background: #FFFCF6; }
+.finding.watch .chip { background: var(--warn-fill); color: var(--warn); }
+.finding.info { border-left-color: var(--charcoal); }
+.finding.info .chip { background: var(--surface); color: var(--heading); }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: var(--space-xs) var(--space-sm) var(--space-xs) 0; border-bottom: 1px solid var(--rule); }
+.kv th { width: 30%; font-weight: 500; color: var(--heading); }
+.kv.with-notes th { width: 22%; }
+.kv td.v { font-family: var(--mono); font-size: 14px; color: var(--heading); word-break: break-word; }
+.kv.with-notes td.v { width: 30%; }
+td.note { font-size: 14px; }
+.list thead th { font: 500 12px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--green-ink); border-bottom: 2px solid var(--rule); }
+.list td.mono { font-size: 14px; }
+.yes { font-weight: 600; color: var(--green-ink); }
+.cap { display: inline-block; font-family: var(--mono); font-size: 14px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 2px var(--space-xs); margin: 0 var(--space-xs) var(--space-xxs) 0; }
+.cap b { color: var(--heading); font-weight: 500; }
+.lede { margin: 0 0 var(--space-xs); }
+.fine { font-size: 13px; margin: var(--space-xs) 0 var(--space-sm); }
+.none { color: var(--body); font-style: italic; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-lg); }
+.pair > section { min-width: 0; }
+.slots { display: grid; grid-template-columns: repeat(16, 1fr); gap: var(--space-xxs); margin: var(--space-xs) 0; }
+.slot { font: 500 13px/36px var(--mono); text-align: center; border-radius: 4px; background: var(--charcoal); color: #fff; }
+.slot.idle { background: var(--surface); color: var(--body); border: 1px solid var(--rule); }
+.wr-foot { margin-top: var(--space-xl); padding: var(--space-md) var(--space-lg); background: var(--surface); border-top: 1px solid var(--rule); font-size: 13px; }
+.wr-foot p { margin: 0 0 var(--space-xxs); }
+.wr-foot p:last-child { font-weight: 500; color: var(--heading); }
+
+@media (max-width: 720px) {
+  .wr > section, .wr .pair { padding: 0 var(--space-sm); }
+  .wr-head { padding: var(--space-md) var(--space-sm); grid-template-columns: 1fr; }
+  .pair { grid-template-columns: 1fr; }
+  .finding { grid-template-columns: 1fr; }
+  .finding .chip { justify-self: start; }
+  .kv.with-notes td.note { display: none; }
+  .slots { grid-template-columns: repeat(8, 1fr); }
+  .hero h1 { font-size: 28px; }
+  .steps { grid-template-columns: 1fr; }
+  .panel { padding: var(--space-sm); }
+  .list th:nth-child(2), .list td:nth-child(2), .list th:nth-child(5), .list td:nth-child(5) { display: none; }
+}
+
+@media print {
+  body { background: #fff; }
+  .site, .hero, .panel, .page-foot, .no-print { display: none !important; }
+  .page { padding: 0; max-width: none; }
+  #report { margin: 0; }
+  .wr { border: 0; border-radius: 0; }
+  .finding, .tile, tr, .slots { break-inside: avoid; }
+  .wr h2 { break-after: avoid; }
+}
+
+/* ---------- Nearby Wi-Fi report additions to the Mac Wi-Fi Report look */
+.wr h3.band { margin: var(--space-md) 0 var(--space-xs); font: 500 13px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--green-ink); }
+.bars { display: grid; gap: var(--space-xxs); }
+.bar-row { display: grid; grid-template-columns: 48px minmax(80px, 1fr) minmax(0, 1.4fr); gap: var(--space-sm); align-items: center; }
+.bar-row .ch { font-size: 15px; color: var(--heading); text-align: right; }
+.track { height: 18px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.bar { display: block; height: 100%; background: var(--charcoal); border-right: 4px solid var(--lime); }
+.bar-note { font-size: 14px; }
+.rssi { font-family: var(--mono); font-size: 14px; font-weight: 500; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+.rssi.good { background: var(--good-fill); color: var(--green-ink); }
+.rssi.fair { background: var(--warn-fill); color: var(--warn); }
+.rssi.weak { background: #FBE9E7; color: #9A2B1C; }
+.list.bss td, .list.bss th { font-size: 14px; padding-right: var(--space-xs); }
+.wr section > table.list { display: block; overflow-x: auto; }
+.wr .tiles { padding: 0 !important; }
+
+@media (max-width: 720px) {
+  .bar-row { grid-template-columns: 36px 1fr; }
+  .bar-note { grid-column: 2; }
+}
+/* The base sheet hides two table columns on phones; these tables scroll sideways instead. */
+@media (max-width: 720px) {
+  .wr .list th, .wr .list td { display: table-cell; }
+}
+.list.bss td { white-space: nowrap; }
+</style>
+</head>
+<body>
+<header class="site"><div class="in">
+  <a href="https://library.wlanpros.com/" aria-label="WLAN Pros Library home"><svg version="1.1" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="529px" height="169.1px"
+	 viewBox="0 0 529 169.1" style="enable-background:new 0 0 529 169.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#A2CD3B;}
+	.st1{fill:#FFFFFF;}
+</style>
+<path class="st0" d="M109.5,14.3c1.1,0.5,2.2,0.3,3.4,0.4c16.7,1.9,32.4,10.9,38.1,31.9c0.2,0.8,0.2,1.2-0.7,1.4
+	c-1.9,0.5-3.8,1-5.7,1.6c-0.5,0.2-0.8,0.2-1-0.5c-4.5-15.5-14.8-24.4-30.7-26.9c-2-0.3-4-0.5-6.1-0.5c-0.6,0-1,0-0.9-0.8
+	c0.2-1.9,0.3-3.7,0.4-5.6c0-0.4,0.2-0.7,0.4-0.9C107.6,14.3,108.6,14.3,109.5,14.3z"/>
+<path class="st0" d="M104.3,74.6c-6.1,0-11.1-4.9-11-11c0-6.1,5-11.1,11.1-11c6,0,11,5,11,11C115.3,69.7,110.4,74.6,104.3,74.6z"/>
+<path class="st0" d="M108,28.7c8.1,0.3,15.5,2.7,21.4,8.6c3.9,3.9,6.4,8.5,7.7,13.8c0.2,0.8,0.1,1-0.7,1.2c-1.5,0.4-2.9,0.8-4.4,1.3
+	c-0.9,0.3-1.2,0.1-1.4-0.8c-1-4.3-3.1-7.9-6.3-10.9c-4.4-4.1-9.8-6.1-15.7-7c-1.1-0.2-2.1-0.3-3.2-0.3c-0.8,0-1-0.3-0.9-1.1
+	c0.2-1.4,0.4-2.8,0.4-4.2c0-0.7,0.3-0.8,0.9-0.8C106.5,28.7,107.2,28.7,108,28.7z"/>
+<path class="st1" d="M348.3,148.1c0.1,1.5-0.1,3-0.5,4.5c-1.3,4.9-5.6,7.6-10.8,6.9c-4.7-0.6-7.2-3.2-7.9-8c-0.3-2.4-0.3-4.7,0.2-7
+	c1.2-5.1,5.2-7.8,10.4-7.3c5.4,0.5,8.3,3.6,8.6,9.2C348.4,146.9,348.3,147.5,348.3,148.1z M345.2,148.2c0.1-1.1-0.1-2.1-0.2-3.2
+	c-0.6-3.3-2.6-5.3-5.6-5.4c-3.6-0.2-6,1.5-6.9,4.8c-0.7,2.6-0.7,5.1,0,7.7c0.8,3.2,2.7,4.7,5.7,4.8c3.4,0.1,5.7-1.4,6.6-4.5
+	C345.1,151,345.3,149.7,345.2,148.2z"/>
+<path class="st1" d="M428.4,153.5c-1.2,0.1-3-0.6-4,0.2c-1,0.8-1.1,2.6-1.6,4c-0.2,0.7-0.4,1.5-1.4,1.5c-1.9,0.1-2.1-0.1-1.5-1.9
+	c2.3-6.3,4.5-12.5,6.7-18.8c0.4-1.2,1.2-1.3,2.2-1.3c1.1,0,1.9,0.1,2.3,1.4c2.2,6.4,4.5,12.7,6.8,19c0.2,0.5,0.8,1.2-0.2,1.6
+	s-2.4,0-2.7-0.8c-0.5-1.3-1-2.7-1.4-4.1c-0.2-0.8-0.6-1-1.4-0.9C431.1,153.5,429.9,153.5,428.4,153.5z M428.7,140.4
+	c-1.3,3.8-2.5,7.2-3.7,10.7c2.5,0,4.9,0,7.4,0C431.2,147.6,430,144.2,428.7,140.4z"/>
+<path class="st0" d="M105.8,41.5c9.2,0.2,16.2,5.4,18.5,13.6c0.3,1,0.1,1.3-0.9,1.6c-1.2,0.3-2.4,0.7-3.5,1.2
+	c-0.6,0.2-0.9,0.2-1.2-0.5c-2.5-6.7-7.4-9.9-14.5-10.1c-0.5,0-0.8-0.1-0.7-0.7c0.1-1.5,0.2-2.9,0.3-4.4c0-0.5,0.3-0.7,0.8-0.6
+	C105,41.5,105.4,41.5,105.8,41.5z"/>
+<path class="st1" d="M11.4,148.5c0-3.2,0-6.3,0-9.5c0-1.1,0.4-1.6,1.6-1.6c1.8,0.1,3.7,0,5.5,0.1c3.6,0.1,6.1,2.4,6.3,5.7
+	c0.3,3.7-1.9,6.6-5.4,7.4c-1.4,0.3-2.8,0.3-4.2,0.2c-0.8,0-1,0.2-1,1c0,2-0.1,4.1,0,6.1c0.1,1.2-0.6,1.3-1.5,1.3s-1.5,0-1.5-1.3
+	C11.4,154.9,11.4,151.7,11.4,148.5z M14.3,144.2c0,1.2,0,2.4,0,3.6c0,0.3-0.1,0.8,0.5,0.8c1.4,0,2.9,0.2,4.3-0.3
+	c1.8-0.7,2.9-2.6,2.6-4.7c-0.2-2.1-1.6-3.4-3.7-3.5c-1-0.1-1.9,0-2.9-0.1c-0.7,0-0.8,0.2-0.8,0.8C14.3,141.8,14.3,143,14.3,144.2z"
+	/>
+<path class="st1" d="M8.2,79.9c5.6,0,11.3,0,16.9,0c0.9,0,1.2,0.1,1.1,1.1c-0.4,6.4-0.8,12.9-1.1,19.3c-0.3,5.2-0.6,10.4-0.9,15.7
+	c0.5-0.3,0.5-0.7,0.6-1.1c3-11.6,7.1-22.8,10.8-34.2c0.2-0.7,0.5-0.8,1.2-0.8c7.7,0,15.4,0,23,0c0.8,0,1,0.2,1,1
+	c0.1,10,0.4,20.1,0.2,30.1c0,1.8,0,3.6,0,5.2c1-3.9,2-8.1,3.2-12.2c2.2-7.8,4.4-15.5,6.6-23.2c0.2-0.7,0.5-0.9,1.2-0.9
+	c5.6,0,11.3,0,16.9,0c1,0,1,0.2,0.7,1.1c-5.6,14.4-11.2,28.8-16.7,43.2c-0.3,0.7-0.6,0.9-1.3,0.9c-7.6,0-15.2,0-22.8,0
+	c-0.9,0-1-0.3-1-1.1c-0.2-11.4-0.5-22.8-0.1-34.2c0-0.4,0-0.8-0.2-1.3c-1.2,3.6-2.2,7.3-3.5,10.9c-2.9,8.3-5.8,16.6-8.7,24.9
+	c-0.2,0.6-0.5,0.8-1.1,0.8c-7.7,0-15.4,0-23,0c-0.7,0-0.9-0.2-1-0.9c-0.5-11.3-1-22.5-1.5-33.8c-0.1-1.6-0.1-3.2-0.2-4.8
+	c0-0.2,0.1-0.5-0.2-0.6C8.2,83.2,8.2,81.5,8.2,79.9z"/>
+<path class="st1" d="M463.8,125c2.1-12.1,4.3-24.2,6.4-36.3c1.3-7.4,2.6-14.9,3.9-22.3c0.1-0.7,0.3-1,1.1-1c5.4,0,10.7,0,16.1,0
+	c0.6,0,0.9,0.1,1.1,0.8c3.5,10,7.4,19.9,9.4,30.3c0.4,2,0.8,4,1.3,5.9c0.1-2.5,0.2-5.1,0.3-7.6c0.3-7.2,1.3-14.4,2.6-21.5
+	c0.4-2.4,0.9-4.8,1.3-7.2c0.1-0.6,0.3-0.8,0.9-0.8c5.2,0,10.4,0,15.6,0c0.6,0,0.9,0.1,0.8,0.8c-3.1,17.7-6.2,35.4-9.3,53
+	c-0.3,1.6-0.6,3.2-0.9,4.8c-0.1,0.6-0.3,0.9-0.9,0.9c-5.2,0-10.3,0-15.5,0c-0.6,0-0.8-0.2-1-0.8c-4.2-12-8.7-24-11.4-36.5
+	c-0.1-0.3-0.2-0.6-0.4-1.1c-0.1,4.4-0.1,8.6-0.3,12.8c-0.3,6-1.2,12-2.3,17.9c-0.4,2.2-0.8,4.3-1.1,6.5c-0.1,0.7-0.3,1.1-1.3,1.1
+	c-5-0.1-10.1,0-15.1,0C464.6,125,464.2,125,463.8,125z"/>
+<path class="st1" d="M460.6,125c-4.7,0-9.3,0-13.9,0c-0.2,0-0.4,0-0.6,0c-1.1,0-2.6,0.4-3.2-0.2c-0.8-0.7-0.3-2.3-0.4-3.4
+	c-0.1-1.6-0.1-3.3-0.1-4.9c0-0.7-0.2-0.9-0.9-0.9c-4.8,0-9.7,0-14.5,0c-0.6,0-0.9,0.3-1.1,0.8c-1,2.6-2,5.2-3,7.8
+	c-0.2,0.4-0.3,0.8-1,0.8c-6.1,0-12.2,0-18.4,0c0.5-1,0.9-2,1.3-2.9c8.5-18.5,16.9-37,25.4-55.6c0.4-0.8,0.8-1.2,1.7-1.2
+	c6.9,0.1,13.8,0,20.6,0c0.8,0,1.1,0.1,1.2,1c1.1,9.2,2.2,18.5,3.3,27.7c1,8.5,2,17.1,3,25.6C460.2,121.5,460.4,123.2,460.6,125z
+	 M430.8,102.9c3.6,0,6.9,0,10.3,0c0.9,0,1.1-0.3,1.1-1.1c-0.2-7-0.4-14-0.5-21c0-2.3,0-4.5,0-6.8c-0.1,0-0.3,0-0.4,0
+	C438,83.7,434.5,93.2,430.8,102.9z"/>
+<path class="st1" d="M195.3,109.9c-0.5,2.7-0.9,5.2-1.4,7.8c-0.3,1.4-0.6,2.8-0.8,4.2c-0.1,0.7-0.4,1-1.1,1.2
+	c-4,1.3-8.2,2.2-12.4,2.6c-5.3,0.5-10.6,0.4-15.8-0.9c-7.9-2-12.4-7.6-13.1-15.8c-0.5-6,0.3-11.7,3.3-17c4-7,10.2-10.8,17.9-12.3
+	c6.1-1.2,12.2-1,18.1,0.9c9.4,3,13,14.3,7,21.8c-2.4,3.1-5.9,4.5-9.6,5.5c-5.6,1.4-11.4,1.6-17.1,1.7c-0.4,0-1.1-0.2-1.3,0.2
+	c-0.3,0.5,0.1,1.1,0.5,1.5c1.1,1.4,2.7,1.8,4.4,1.9c5.7,0.3,11.2-0.7,16.7-2C192.1,110.8,193.6,110.4,195.3,109.9z M170.7,100.2
+	c2.8-0.2,5.6-0.2,8.2-1.4c2.8-1.2,4-3.9,2.9-6.8c-0.5-1.3-1.4-2.1-2.8-2.3c-2.3-0.4-4.3,0.3-6,1.9c-2,1.9-3,4.3-3.7,6.8
+	C168.8,100.3,168.8,100.3,170.7,100.2z"/>
+<path class="st1" d="M268.9,109.8c-0.8,4.3-1.5,8.3-2.2,12.4c-0.1,0.5-0.5,0.6-0.8,0.7c-6.8,2.2-13.8,3.2-20.9,2.8
+	c-2.6-0.1-5.3-0.4-7.8-1.2c-7.2-2-11.5-6.7-12.6-14.2c-0.9-6-0.3-11.9,2.5-17.4c3.8-7.6,10.3-11.8,18.5-13.4
+	c6.1-1.2,12.2-1,18.1,0.9c4.9,1.6,8.4,4.6,9.4,9.9c1.3,7.2-1,13.5-8.9,16.5c-4.1,1.5-8.3,2.1-12.7,2.4c-2.7,0.2-5.4,0.3-8.2,0.2
+	c-0.9,0-0.9,0.4-0.6,1c0.9,2.1,2.8,2.5,4.7,2.7c4.2,0.3,8.4-0.3,12.5-1.1C262.9,111.6,265.9,110.8,268.9,109.8z M242.5,100.3
+	c1.9-0.1,3.6-0.1,5.3-0.3c2-0.2,4-0.6,5.7-1.7c2.3-1.5,3-4.8,1.6-7.1c-0.6-0.9-1.4-1.3-2.3-1.5c-2.3-0.4-4.3,0.3-5.9,1.8
+	C244.3,93.9,243.3,96.9,242.5,100.3z"/>
+<path class="st1" d="M300,79.1c6.2,0,12.1,1.1,17.8,3.6c0.9,0.4,1.3,0.7,1,1.8c-0.7,3.2-1.2,6.5-1.7,9.8c-0.1,0.8-0.5,0.6-1,0.4
+	c-3.6-1.3-7.3-2.4-11.1-3c-2.7-0.4-5.4-0.5-8.1,0.1c-0.8,0.2-1.6,0.5-1.8,1.5c-0.1,1.1,0.7,1.5,1.5,1.8c2.9,1.2,5.9,1.8,8.9,2.7
+	c2.3,0.7,4.6,1.7,6.5,3.2c2.6,2,3.9,4.7,4,8c0.1,2.2,0,4.3-0.6,6.4c-1.5,5.3-5.3,8-10.3,9.2c-7.1,1.7-14.3,1.6-21.5,0.2
+	c-3.2-0.6-6.4-1.5-9.4-2.6c-0.6-0.2-0.8-0.5-0.7-1.2c0.7-3.5,1.2-7.1,1.8-10.6c0.1-0.8,0.3-1,1.1-0.7c4.4,1.5,8.9,2.8,13.6,3.3
+	c2,0.2,4.1,0.2,6.1-0.1c0.2,0,0.3-0.1,0.5-0.1c0.9-0.2,1.6-0.6,1.6-1.7c0-1-0.6-1.5-1.4-1.8c-1.2-0.5-2.5-0.8-3.7-1.2
+	c-2.7-0.8-5.6-1.4-8.2-2.7c-3.8-1.8-6.8-4.4-7.4-8.7c-1.2-7.6,2.4-13.4,9.7-15.9C291.4,79.4,295.7,79.1,300,79.1z"/>
+<path class="st1" d="M340.6,125.9c-7.3,0.2-14.3-1.2-21.1-3.6c-0.6-0.2-0.9-0.4-0.7-1.2c0.7-3.5,1.2-7.1,1.8-10.6
+	c0.1-0.9,0.4-1,1.2-0.7c4.4,1.5,8.8,2.8,13.4,3.3c2,0.2,4.1,0.2,6.1-0.1c0.3-0.1,0.7-0.2,1-0.3c0.6-0.3,1.1-0.7,1.1-1.4
+	c0.1-0.7-0.3-1.2-0.9-1.6c-1-0.6-2.2-0.9-3.4-1.2c-3-0.9-6.1-1.5-9-2.9c-3.6-1.7-6.5-4.1-7.4-8.3c-1.1-5.4,0.5-12,6.9-15.3
+	c3.4-1.7,7-2.4,10.7-2.7c7.4-0.6,14.6,0.1,21.5,3c2.3,1,2.3,0.9,1.8,3.4c-0.5,2.8-1.1,5.6-1.5,8.5c-0.1,0.9-0.4,0.8-1.1,0.6
+	c-4.3-1.6-8.6-2.8-13.2-3.2c-2-0.2-4-0.1-6,0.3c-0.8,0.2-1.6,0.5-1.7,1.5c-0.1,1.1,0.7,1.5,1.4,1.8c2.9,1.2,5.9,1.8,8.9,2.8
+	c2.3,0.7,4.5,1.6,6.4,3.1c2.6,2,3.9,4.7,4.1,7.9c0.1,2.2,0,4.5-0.6,6.7c-1.5,5.2-5.3,7.9-10.3,9.2
+	C347.2,125.6,343.9,125.7,340.6,125.9z"/>
+<path class="st1" d="M403.8,111.1c-1.3,4-2.6,7.9-3.9,11.9c-0.7,2.1-0.7,2.1-2.9,2.1c-10.6,0-21.3,0-31.9,0c-1.2,0-1.3-0.3-1.1-1.3
+	c3.1-17.3,6.1-34.6,9.1-51.8c0.3-1.8,0.7-3.6,0.9-5.4c0.1-0.8,0.4-1,1.2-1c5.3,0,10.6,0.1,15.8,0c1,0,1.1,0.3,0.9,1.1
+	c-1,5.7-2,11.3-3,17c-1.6,8.8-3.1,17.7-4.7,26.5c-0.2,0.9,0.1,1,1,1c5.8,0,11.7,0,17.5,0C403.1,111.1,403.4,111.1,403.8,111.1z"/>
+<path class="st1" d="M207.8,125c-2.7,0-5.4,0-8,0c-0.7,0-1-0.1-0.8-0.9c3.2-17.9,6.3-35.7,9.5-53.6c0.3-2,0.7-3.9,1-5.9
+	c0.1-0.7,0.4-0.9,1.1-0.9c5.4,0,10.7,0,16.1,0c0.9,0,0.9,0.4,0.8,1.1c-1.2,6.9-2.5,13.8-3.7,20.7c-1.7,9.3-3.3,18.7-4.9,28
+	c-0.6,3.5-1.3,7.1-1.9,10.6c-0.1,0.7-0.4,0.9-1.1,0.9C213.1,125,210.4,125,207.8,125z"/>
+<path class="st1" d="M130.5,88.9c1.2-2.4,2.6-4.5,4.4-6.1c4.3-4,9.2-4.6,14.6-2.8c2,0.7,2,0.9,1.7,3.1c-0.7,4-1.3,8-2,12.1
+	c-1.5-0.6-3-1.2-4.7-1.5c-3.4-0.7-6.3,0.2-8.7,2.6c-3.5,3.5-5.4,7.7-6.1,12.6c-0.7,5.1-1.8,10.2-2.6,15.3c-0.1,0.7-0.4,0.9-1.1,0.9
+	c-5.3,0-10.6,0-16,0c-0.9,0-1-0.3-0.9-1.1c1.1-6.1,2.2-12.3,3.2-18.4c1.4-8,2.8-15.9,4.2-23.9c0.3-1.8,0.3-1.8,2.1-1.8
+	c3.4,0,6.7,0,10.1,0c0.7,0,1,0.2,1.1,1C129.9,83.4,130.2,86,130.5,88.9z"/>
+<path class="st1" d="M94.2,125c-2.7,0-5.4,0-8,0c-0.7,0-0.9-0.1-0.8-0.9c2.5-14.4,5.1-28.8,7.6-43.1c0.1-0.8,0.3-1.1,1.3-1.1
+	c5.2,0.1,10.5,0.1,15.7,0c1,0,1.1,0.3,1,1.2c-1.4,7.9-2.8,15.7-4.1,23.6c-1.1,6.2-2.2,12.5-3.3,18.7c-0.3,1.6-0.3,1.6-2,1.6
+	C99.1,125,96.7,125,94.2,125z"/>
+<path class="st1" d="M389.8,154.7c0-5.3,0-10.6,0-15.9c0-1.1,0.4-1.5,1.4-1.5c1.4,0,1.5,0.1,1.5,1.6c0,6,0,12.1,0,18.1
+	c0,0.8,0.2,1.7-0.8,2.1s-2.5,0.1-3.2-0.7c-0.4-0.5-0.7-1-1-1.5c-2.7-5.1-5.4-10.2-8.1-15.3c-0.1-0.2-0.1-0.4-0.4-0.4
+	c0,5.5,0,11.1,0,16.6c0,1.1-0.4,1.5-1.4,1.5c-1.4,0-1.6-0.2-1.6-1.6c0-6.1,0-12.2,0-18.3c0-1.7,0.2-1.9,1.9-2
+	c1.7-0.1,2.7,0.6,3.5,2.1c2.5,4.9,5.1,9.7,7.6,14.5C389.4,154.2,389.4,154.6,389.8,154.7z"/>
+<path class="st1" d="M112.7,148.1c0,1.4-0.1,2.7-0.4,4c-1.5,6.1-6.1,7.9-11,7.3c-4.8-0.6-7.3-3.4-7.8-8.2c-0.3-2.2-0.3-4.4,0.2-6.5
+	c1.2-5.2,5.1-8.1,10.4-7.6c5.3,0.5,8.3,3.6,8.6,8.9C112.7,146.7,112.7,147.4,112.7,148.1z M109.6,148.2c0-1.1-0.1-2.1-0.3-3.2
+	c-0.6-3.3-2.7-5.2-5.7-5.3c-3.6-0.1-6,1.6-6.8,4.9c-0.6,2.5-0.6,5.1,0,7.6c0.7,3,2.6,4.7,5.3,4.8c3.6,0.2,5.9-1.2,6.9-4.3
+	C109.5,151.2,109.6,149.7,109.6,148.2z"/>
+<path class="st1" d="M61.7,148.6c1.3,0.7,2,1.8,2.5,3c0.9,2.1,1.7,4.2,2.6,6.3c0.4,1,0,1.3-0.9,1.3c-1.2,0.1-2-0.2-2.4-1.5
+	c-0.6-2-1.4-3.9-2.3-5.8c-1-2.1-3-3-5.3-2.6c-0.7,0.1-0.4,0.6-0.4,0.9c0,2.5-0.1,5,0,7.4c0,1.2-0.5,1.5-1.6,1.5
+	c-1,0-1.5-0.3-1.5-1.4c0.1-6.2,0-12.4,0-18.6c0-1.7,0.2-1.9,1.9-1.9c2.2,0,4.3-0.2,6.5,0.2c2.9,0.5,4.6,2.2,4.9,4.7
+	c0.4,2.9-0.7,4.7-3.5,6.1C62,148.4,61.9,148.5,61.7,148.6z M57.6,139.9c-2.2,0-2.2,0-2.2,2.2c0,0.6,0,1.2,0,1.8
+	c0.1,1.1-0.5,2.6,0.2,3.1c1,0.6,2.6,0.3,3.8,0.1c2.1-0.4,3.2-1.8,3.1-3.9c-0.1-2-1.3-3.1-3.5-3.3C58.5,139.8,58.1,139.9,57.6,139.9z
+	"/>
+<path class="st1" d="M179.7,148.4c0-3,0-6.1,0-9.1c0-1.6,0.2-1.8,1.8-1.8c3,0,6,0,9,0c1,0,1.3,0.4,1.3,1.3s-0.3,1.3-1.3,1.2
+	c-2.3-0.1-4.6,0-7,0c-0.6,0-0.8,0.1-0.8,0.8c0,1.7,0.1,3.4,0,5.2c0,0.7,0.3,0.8,0.9,0.8c1.9,0,3.8,0,5.8,0c0.9,0,1.2,0.4,1.2,1.2
+	c0,0.8-0.2,1.2-1.1,1.2c-2-0.1-3.9,0-5.9,0c-0.6,0-0.8,0.1-0.8,0.8c0,2,0,4.1,0,6.1c0,0.7,0.2,0.9,0.9,0.9c2.4,0,4.7,0,7.1,0
+	c1,0,1.2,0.4,1.2,1.3c0,0.8-0.3,1.2-1.2,1.2c-3.1,0-6.2,0-9.2,0c-1.5,0-1.8-0.3-1.8-1.8C179.7,154.4,179.7,151.4,179.7,148.4z"/>
+<path class="st1" d="M224.5,159.6c-2-0.1-3.5-0.4-5-1.1c-1-0.5-1.4-1.2-1.3-2.3c0.1-1.1,0.3-1.2,1.3-0.7c1.6,0.9,3.2,1.6,5.1,1.5
+	c2-0.1,3.4-1,3.8-2.5c0.5-1.8-0.1-3.1-2.1-4.2c-1.5-0.8-3-1.4-4.5-2.3c-1.7-1-2.9-2.4-3-4.5c-0.3-4.1,2.6-6.7,6.9-6.4
+	c1.3,0.1,2.5,0.4,3.7,1c0.4,0.2,0.8,0.4,0.9,0.9c0.1,0.7,0.3,1.5-0.2,2s-1.1-0.2-1.6-0.5c-1.3-0.6-2.6-1-4-0.8
+	c-1.2,0.1-2.2,0.7-2.6,1.8c-0.5,1.2-0.2,2.4,0.8,3.3c0.6,0.6,1.4,1.1,2.2,1.4c1.1,0.5,2.2,1,3.3,1.6c2.7,1.5,3.7,3.5,3.3,6.4
+	c-0.3,2.5-2.3,4.4-5,5C225.7,159.4,224.9,159.6,224.5,159.6z"/>
+<path class="st1" d="M507,159.5c-1.7-0.1-3.2-0.4-4.7-1.2c-0.5-0.3-1-0.6-1.1-1.2s-0.3-1.4,0.2-1.8c0.5-0.5,1,0.2,1.5,0.4
+	c1.9,1,3.8,1.6,6,1c1.3-0.4,2.2-1.2,2.5-2.6c0.3-1.5-0.2-2.6-1.5-3.5c-0.9-0.6-1.8-1-2.8-1.4c-1.1-0.5-2.2-1.1-3.2-1.8
+	c-1.9-1.5-2.6-3.5-2.1-5.9c0.4-2.2,1.9-3.5,4.1-4.1c2.2-0.6,4.3-0.4,6.3,0.6c1,0.5,1.5,1.7,1.1,2.7c-0.3,0.7-0.7,0.3-1.1,0.1
+	c-1.3-0.8-2.7-1.3-4.3-1.2c-1.6,0.1-2.6,0.8-3,2.1c-0.4,1.4,0,2.5,1.3,3.5c0.8,0.6,1.8,1,2.7,1.5c0.8,0.4,1.6,0.8,2.4,1.2
+	c2.7,1.5,3.7,3.5,3.2,6.5c-0.3,2.4-2.4,4.4-5.1,5C508.6,159.4,507.8,159.6,507,159.5z"/>
+<path class="st1" d="M263.3,159.5c-1.7,0-3.4-0.4-4.9-1.2c-0.9-0.5-1.3-1.8-0.9-2.7c0.3-0.7,0.8-0.3,1.2-0.1c1.6,1,3.3,1.6,5.2,1.5
+	c2-0.1,3.3-1,3.7-2.6c0.4-1.7-0.2-3-2-4c-1.5-0.8-3.1-1.5-4.6-2.3c-2.9-1.7-4-4.9-2.5-7.7c1.2-2.4,3.5-3.1,5.9-3.2
+	c1.4-0.1,2.8,0.3,4.1,0.9c1,0.5,1.5,1.7,1,2.7c-0.3,0.7-0.7,0.3-1.1,0.1c-1.4-0.8-2.8-1.3-4.4-1.2c-1.4,0.1-2.5,0.8-2.9,1.9
+	c-0.4,1.4,0,2.5,1,3.4c0.7,0.6,1.5,1,2.2,1.4c1,0.5,2,0.9,3,1.5c2.6,1.4,3.7,3.4,3.4,6.1c-0.4,2.8-2.1,4.7-4.9,5.4
+	C264.9,159.4,264.1,159.6,263.3,159.5z"/>
+<path class="st1" d="M140.6,148.5c0-3.1,0-6.2,0-9.4c0-1.5,0.2-1.7,1.7-1.7c2.8,0,5.7,0,8.5,0c1,0,1.2,0.4,1.2,1.3s-0.3,1.3-1.3,1.2
+	c-2.1-0.1-4.2,0-6.4,0c-0.7,0-0.9,0.1-0.9,0.9c0,1.9,0,3.8,0,5.8c0,0.6,0.2,0.8,0.8,0.8c2,0,4.1,0,6.1,0c1,0,1.1,0.5,1.1,1.2
+	c0,0.8-0.2,1.3-1.2,1.2c-2-0.1-4,0-6,0c-0.8,0-0.9,0.2-0.9,0.9c0,2.4-0.1,4.8,0,7.2c0,1.2-0.5,1.5-1.6,1.5c-1,0-1.5-0.3-1.5-1.4
+	C140.6,154.8,140.6,151.6,140.6,148.5z"/>
+<path class="st1" d="M465,148.1c0-3.1,0.1-6.2,0-9.2c0-1.2,0.4-1.6,1.5-1.6c1,0,1.5,0.3,1.5,1.5c-0.1,5.5,0,11.1-0.1,16.7
+	c0,1,0.2,1.3,1.2,1.3c2-0.1,4.1,0,6.1,0c0.9,0,1.1,0.5,1,1.2c0,0.7,0,1.4-1,1.4c-3,0-6,0-9,0c-0.9,0-1.3-0.5-1.3-1.4
+	C465,154.5,465,151.3,465,148.1z"/>
+<path class="st1" d="M301.1,148.3c0,3.3,0,6.5,0,9.8c0,1.3-0.7,1.2-1.5,1.2s-1.4-0.1-1.4-1.2c0-6.5,0-13.1,0-19.6
+	c0-1.2,0.7-1.2,1.5-1.2c0.7,0,1.5-0.1,1.5,1.1C301,141.7,301.1,145,301.1,148.3z"/>
+</svg></a>
+  <a href="https://library.wlanpros.com/">Library</a>
+</div></header>
+
+<main class="page">
+  <section class="hero">
+    <p class="eyebrow">Free tool · beta</p>
+    <h1>Nearby Wi-Fi Report</h1>
+    <p class="lede"><a href="https://github.com/joshschmelzle/lswifi">lswifi</a>, a free scanner by Josh Schmelzle, lists every Wi-Fi network your computer can hear on Windows, macOS and Linux. Paste its output here and get a clean report: who is on which channel, how strong, how secure, and what stands out.</p>
+  </section>
+
+  <section class="panel">
+    <ol class="steps">
+      <li><strong>Install lswifi</strong>Needs Python 3.13 or newer: <code>python3 -m pip install lswifi</code>. On a Mac, use the python.org Python and allow it in Location Services.</li>
+      <li><strong>Run this and press Return</strong>
+        <div class="cmd"><code id="command">lswifi --json | pbcopy</code><button type="button" class="small" id="copy-command">Copy</button></div>
+        On Windows, use <code>lswifi --json | clip</code>. The plain table works too.</li>
+      <li><strong>Paste it below</strong>Click in the box and press Command-V (Ctrl-V on Windows).</li>
+    </ol>
+    <label for="input" class="eyebrow">lswifi output</label>
+    <textarea id="input" spellcheck="false" placeholder="Paste the output of lswifi --json, or its table, here"></textarea>
+    <div class="controls">
+      <button type="button" class="primary" id="make">Make report</button>
+      <button type="button" id="example">Try an example</button>
+      <span class="spacer"></span>
+      <label class="toggle"><input type="checkbox" id="redact" checked> Hide identifying details</label>
+      <button type="button" id="print" hidden>Print or save PDF</button>
+    </div>
+    <p class="privacy">Your paste never leaves this page. There is no upload: your browser builds the report. Hiding identifying details replaces network names with numbers and masks the device part of each BSSID, so the report is safe to send to someone helping you.</p>
+    <div id="message" class="message" hidden></div>
+  </section>
+
+  <div id="report" aria-live="polite"></div>
+</main>
+
+<footer class="page-foot"><p>Built by Keith Parsons · CWNE #3. lswifi is Josh Schmelzle's open-source scanner (BSD-3 license); this page reads its output and does not run anything on your computer.</p></footer>
+
+<template id="logo"><svg version="1.1" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="529px" height="169.1px"
+	 viewBox="0 0 529 169.1" style="enable-background:new 0 0 529 169.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#A2CD3B;}
+	.st1{fill:#FFFFFF;}
+</style>
+<path class="st0" d="M109.5,14.3c1.1,0.5,2.2,0.3,3.4,0.4c16.7,1.9,32.4,10.9,38.1,31.9c0.2,0.8,0.2,1.2-0.7,1.4
+	c-1.9,0.5-3.8,1-5.7,1.6c-0.5,0.2-0.8,0.2-1-0.5c-4.5-15.5-14.8-24.4-30.7-26.9c-2-0.3-4-0.5-6.1-0.5c-0.6,0-1,0-0.9-0.8
+	c0.2-1.9,0.3-3.7,0.4-5.6c0-0.4,0.2-0.7,0.4-0.9C107.6,14.3,108.6,14.3,109.5,14.3z"/>
+<path class="st0" d="M104.3,74.6c-6.1,0-11.1-4.9-11-11c0-6.1,5-11.1,11.1-11c6,0,11,5,11,11C115.3,69.7,110.4,74.6,104.3,74.6z"/>
+<path class="st0" d="M108,28.7c8.1,0.3,15.5,2.7,21.4,8.6c3.9,3.9,6.4,8.5,7.7,13.8c0.2,0.8,0.1,1-0.7,1.2c-1.5,0.4-2.9,0.8-4.4,1.3
+	c-0.9,0.3-1.2,0.1-1.4-0.8c-1-4.3-3.1-7.9-6.3-10.9c-4.4-4.1-9.8-6.1-15.7-7c-1.1-0.2-2.1-0.3-3.2-0.3c-0.8,0-1-0.3-0.9-1.1
+	c0.2-1.4,0.4-2.8,0.4-4.2c0-0.7,0.3-0.8,0.9-0.8C106.5,28.7,107.2,28.7,108,28.7z"/>
+<path class="st1" d="M348.3,148.1c0.1,1.5-0.1,3-0.5,4.5c-1.3,4.9-5.6,7.6-10.8,6.9c-4.7-0.6-7.2-3.2-7.9-8c-0.3-2.4-0.3-4.7,0.2-7
+	c1.2-5.1,5.2-7.8,10.4-7.3c5.4,0.5,8.3,3.6,8.6,9.2C348.4,146.9,348.3,147.5,348.3,148.1z M345.2,148.2c0.1-1.1-0.1-2.1-0.2-3.2
+	c-0.6-3.3-2.6-5.3-5.6-5.4c-3.6-0.2-6,1.5-6.9,4.8c-0.7,2.6-0.7,5.1,0,7.7c0.8,3.2,2.7,4.7,5.7,4.8c3.4,0.1,5.7-1.4,6.6-4.5
+	C345.1,151,345.3,149.7,345.2,148.2z"/>
+<path class="st1" d="M428.4,153.5c-1.2,0.1-3-0.6-4,0.2c-1,0.8-1.1,2.6-1.6,4c-0.2,0.7-0.4,1.5-1.4,1.5c-1.9,0.1-2.1-0.1-1.5-1.9
+	c2.3-6.3,4.5-12.5,6.7-18.8c0.4-1.2,1.2-1.3,2.2-1.3c1.1,0,1.9,0.1,2.3,1.4c2.2,6.4,4.5,12.7,6.8,19c0.2,0.5,0.8,1.2-0.2,1.6
+	s-2.4,0-2.7-0.8c-0.5-1.3-1-2.7-1.4-4.1c-0.2-0.8-0.6-1-1.4-0.9C431.1,153.5,429.9,153.5,428.4,153.5z M428.7,140.4
+	c-1.3,3.8-2.5,7.2-3.7,10.7c2.5,0,4.9,0,7.4,0C431.2,147.6,430,144.2,428.7,140.4z"/>
+<path class="st0" d="M105.8,41.5c9.2,0.2,16.2,5.4,18.5,13.6c0.3,1,0.1,1.3-0.9,1.6c-1.2,0.3-2.4,0.7-3.5,1.2
+	c-0.6,0.2-0.9,0.2-1.2-0.5c-2.5-6.7-7.4-9.9-14.5-10.1c-0.5,0-0.8-0.1-0.7-0.7c0.1-1.5,0.2-2.9,0.3-4.4c0-0.5,0.3-0.7,0.8-0.6
+	C105,41.5,105.4,41.5,105.8,41.5z"/>
+<path class="st1" d="M11.4,148.5c0-3.2,0-6.3,0-9.5c0-1.1,0.4-1.6,1.6-1.6c1.8,0.1,3.7,0,5.5,0.1c3.6,0.1,6.1,2.4,6.3,5.7
+	c0.3,3.7-1.9,6.6-5.4,7.4c-1.4,0.3-2.8,0.3-4.2,0.2c-0.8,0-1,0.2-1,1c0,2-0.1,4.1,0,6.1c0.1,1.2-0.6,1.3-1.5,1.3s-1.5,0-1.5-1.3
+	C11.4,154.9,11.4,151.7,11.4,148.5z M14.3,144.2c0,1.2,0,2.4,0,3.6c0,0.3-0.1,0.8,0.5,0.8c1.4,0,2.9,0.2,4.3-0.3
+	c1.8-0.7,2.9-2.6,2.6-4.7c-0.2-2.1-1.6-3.4-3.7-3.5c-1-0.1-1.9,0-2.9-0.1c-0.7,0-0.8,0.2-0.8,0.8C14.3,141.8,14.3,143,14.3,144.2z"
+	/>
+<path class="st1" d="M8.2,79.9c5.6,0,11.3,0,16.9,0c0.9,0,1.2,0.1,1.1,1.1c-0.4,6.4-0.8,12.9-1.1,19.3c-0.3,5.2-0.6,10.4-0.9,15.7
+	c0.5-0.3,0.5-0.7,0.6-1.1c3-11.6,7.1-22.8,10.8-34.2c0.2-0.7,0.5-0.8,1.2-0.8c7.7,0,15.4,0,23,0c0.8,0,1,0.2,1,1
+	c0.1,10,0.4,20.1,0.2,30.1c0,1.8,0,3.6,0,5.2c1-3.9,2-8.1,3.2-12.2c2.2-7.8,4.4-15.5,6.6-23.2c0.2-0.7,0.5-0.9,1.2-0.9
+	c5.6,0,11.3,0,16.9,0c1,0,1,0.2,0.7,1.1c-5.6,14.4-11.2,28.8-16.7,43.2c-0.3,0.7-0.6,0.9-1.3,0.9c-7.6,0-15.2,0-22.8,0
+	c-0.9,0-1-0.3-1-1.1c-0.2-11.4-0.5-22.8-0.1-34.2c0-0.4,0-0.8-0.2-1.3c-1.2,3.6-2.2,7.3-3.5,10.9c-2.9,8.3-5.8,16.6-8.7,24.9
+	c-0.2,0.6-0.5,0.8-1.1,0.8c-7.7,0-15.4,0-23,0c-0.7,0-0.9-0.2-1-0.9c-0.5-11.3-1-22.5-1.5-33.8c-0.1-1.6-0.1-3.2-0.2-4.8
+	c0-0.2,0.1-0.5-0.2-0.6C8.2,83.2,8.2,81.5,8.2,79.9z"/>
+<path class="st1" d="M463.8,125c2.1-12.1,4.3-24.2,6.4-36.3c1.3-7.4,2.6-14.9,3.9-22.3c0.1-0.7,0.3-1,1.1-1c5.4,0,10.7,0,16.1,0
+	c0.6,0,0.9,0.1,1.1,0.8c3.5,10,7.4,19.9,9.4,30.3c0.4,2,0.8,4,1.3,5.9c0.1-2.5,0.2-5.1,0.3-7.6c0.3-7.2,1.3-14.4,2.6-21.5
+	c0.4-2.4,0.9-4.8,1.3-7.2c0.1-0.6,0.3-0.8,0.9-0.8c5.2,0,10.4,0,15.6,0c0.6,0,0.9,0.1,0.8,0.8c-3.1,17.7-6.2,35.4-9.3,53
+	c-0.3,1.6-0.6,3.2-0.9,4.8c-0.1,0.6-0.3,0.9-0.9,0.9c-5.2,0-10.3,0-15.5,0c-0.6,0-0.8-0.2-1-0.8c-4.2-12-8.7-24-11.4-36.5
+	c-0.1-0.3-0.2-0.6-0.4-1.1c-0.1,4.4-0.1,8.6-0.3,12.8c-0.3,6-1.2,12-2.3,17.9c-0.4,2.2-0.8,4.3-1.1,6.5c-0.1,0.7-0.3,1.1-1.3,1.1
+	c-5-0.1-10.1,0-15.1,0C464.6,125,464.2,125,463.8,125z"/>
+<path class="st1" d="M460.6,125c-4.7,0-9.3,0-13.9,0c-0.2,0-0.4,0-0.6,0c-1.1,0-2.6,0.4-3.2-0.2c-0.8-0.7-0.3-2.3-0.4-3.4
+	c-0.1-1.6-0.1-3.3-0.1-4.9c0-0.7-0.2-0.9-0.9-0.9c-4.8,0-9.7,0-14.5,0c-0.6,0-0.9,0.3-1.1,0.8c-1,2.6-2,5.2-3,7.8
+	c-0.2,0.4-0.3,0.8-1,0.8c-6.1,0-12.2,0-18.4,0c0.5-1,0.9-2,1.3-2.9c8.5-18.5,16.9-37,25.4-55.6c0.4-0.8,0.8-1.2,1.7-1.2
+	c6.9,0.1,13.8,0,20.6,0c0.8,0,1.1,0.1,1.2,1c1.1,9.2,2.2,18.5,3.3,27.7c1,8.5,2,17.1,3,25.6C460.2,121.5,460.4,123.2,460.6,125z
+	 M430.8,102.9c3.6,0,6.9,0,10.3,0c0.9,0,1.1-0.3,1.1-1.1c-0.2-7-0.4-14-0.5-21c0-2.3,0-4.5,0-6.8c-0.1,0-0.3,0-0.4,0
+	C438,83.7,434.5,93.2,430.8,102.9z"/>
+<path class="st1" d="M195.3,109.9c-0.5,2.7-0.9,5.2-1.4,7.8c-0.3,1.4-0.6,2.8-0.8,4.2c-0.1,0.7-0.4,1-1.1,1.2
+	c-4,1.3-8.2,2.2-12.4,2.6c-5.3,0.5-10.6,0.4-15.8-0.9c-7.9-2-12.4-7.6-13.1-15.8c-0.5-6,0.3-11.7,3.3-17c4-7,10.2-10.8,17.9-12.3
+	c6.1-1.2,12.2-1,18.1,0.9c9.4,3,13,14.3,7,21.8c-2.4,3.1-5.9,4.5-9.6,5.5c-5.6,1.4-11.4,1.6-17.1,1.7c-0.4,0-1.1-0.2-1.3,0.2
+	c-0.3,0.5,0.1,1.1,0.5,1.5c1.1,1.4,2.7,1.8,4.4,1.9c5.7,0.3,11.2-0.7,16.7-2C192.1,110.8,193.6,110.4,195.3,109.9z M170.7,100.2
+	c2.8-0.2,5.6-0.2,8.2-1.4c2.8-1.2,4-3.9,2.9-6.8c-0.5-1.3-1.4-2.1-2.8-2.3c-2.3-0.4-4.3,0.3-6,1.9c-2,1.9-3,4.3-3.7,6.8
+	C168.8,100.3,168.8,100.3,170.7,100.2z"/>
+<path class="st1" d="M268.9,109.8c-0.8,4.3-1.5,8.3-2.2,12.4c-0.1,0.5-0.5,0.6-0.8,0.7c-6.8,2.2-13.8,3.2-20.9,2.8
+	c-2.6-0.1-5.3-0.4-7.8-1.2c-7.2-2-11.5-6.7-12.6-14.2c-0.9-6-0.3-11.9,2.5-17.4c3.8-7.6,10.3-11.8,18.5-13.4
+	c6.1-1.2,12.2-1,18.1,0.9c4.9,1.6,8.4,4.6,9.4,9.9c1.3,7.2-1,13.5-8.9,16.5c-4.1,1.5-8.3,2.1-12.7,2.4c-2.7,0.2-5.4,0.3-8.2,0.2
+	c-0.9,0-0.9,0.4-0.6,1c0.9,2.1,2.8,2.5,4.7,2.7c4.2,0.3,8.4-0.3,12.5-1.1C262.9,111.6,265.9,110.8,268.9,109.8z M242.5,100.3
+	c1.9-0.1,3.6-0.1,5.3-0.3c2-0.2,4-0.6,5.7-1.7c2.3-1.5,3-4.8,1.6-7.1c-0.6-0.9-1.4-1.3-2.3-1.5c-2.3-0.4-4.3,0.3-5.9,1.8
+	C244.3,93.9,243.3,96.9,242.5,100.3z"/>
+<path class="st1" d="M300,79.1c6.2,0,12.1,1.1,17.8,3.6c0.9,0.4,1.3,0.7,1,1.8c-0.7,3.2-1.2,6.5-1.7,9.8c-0.1,0.8-0.5,0.6-1,0.4
+	c-3.6-1.3-7.3-2.4-11.1-3c-2.7-0.4-5.4-0.5-8.1,0.1c-0.8,0.2-1.6,0.5-1.8,1.5c-0.1,1.1,0.7,1.5,1.5,1.8c2.9,1.2,5.9,1.8,8.9,2.7
+	c2.3,0.7,4.6,1.7,6.5,3.2c2.6,2,3.9,4.7,4,8c0.1,2.2,0,4.3-0.6,6.4c-1.5,5.3-5.3,8-10.3,9.2c-7.1,1.7-14.3,1.6-21.5,0.2
+	c-3.2-0.6-6.4-1.5-9.4-2.6c-0.6-0.2-0.8-0.5-0.7-1.2c0.7-3.5,1.2-7.1,1.8-10.6c0.1-0.8,0.3-1,1.1-0.7c4.4,1.5,8.9,2.8,13.6,3.3
+	c2,0.2,4.1,0.2,6.1-0.1c0.2,0,0.3-0.1,0.5-0.1c0.9-0.2,1.6-0.6,1.6-1.7c0-1-0.6-1.5-1.4-1.8c-1.2-0.5-2.5-0.8-3.7-1.2
+	c-2.7-0.8-5.6-1.4-8.2-2.7c-3.8-1.8-6.8-4.4-7.4-8.7c-1.2-7.6,2.4-13.4,9.7-15.9C291.4,79.4,295.7,79.1,300,79.1z"/>
+<path class="st1" d="M340.6,125.9c-7.3,0.2-14.3-1.2-21.1-3.6c-0.6-0.2-0.9-0.4-0.7-1.2c0.7-3.5,1.2-7.1,1.8-10.6
+	c0.1-0.9,0.4-1,1.2-0.7c4.4,1.5,8.8,2.8,13.4,3.3c2,0.2,4.1,0.2,6.1-0.1c0.3-0.1,0.7-0.2,1-0.3c0.6-0.3,1.1-0.7,1.1-1.4
+	c0.1-0.7-0.3-1.2-0.9-1.6c-1-0.6-2.2-0.9-3.4-1.2c-3-0.9-6.1-1.5-9-2.9c-3.6-1.7-6.5-4.1-7.4-8.3c-1.1-5.4,0.5-12,6.9-15.3
+	c3.4-1.7,7-2.4,10.7-2.7c7.4-0.6,14.6,0.1,21.5,3c2.3,1,2.3,0.9,1.8,3.4c-0.5,2.8-1.1,5.6-1.5,8.5c-0.1,0.9-0.4,0.8-1.1,0.6
+	c-4.3-1.6-8.6-2.8-13.2-3.2c-2-0.2-4-0.1-6,0.3c-0.8,0.2-1.6,0.5-1.7,1.5c-0.1,1.1,0.7,1.5,1.4,1.8c2.9,1.2,5.9,1.8,8.9,2.8
+	c2.3,0.7,4.5,1.6,6.4,3.1c2.6,2,3.9,4.7,4.1,7.9c0.1,2.2,0,4.5-0.6,6.7c-1.5,5.2-5.3,7.9-10.3,9.2
+	C347.2,125.6,343.9,125.7,340.6,125.9z"/>
+<path class="st1" d="M403.8,111.1c-1.3,4-2.6,7.9-3.9,11.9c-0.7,2.1-0.7,2.1-2.9,2.1c-10.6,0-21.3,0-31.9,0c-1.2,0-1.3-0.3-1.1-1.3
+	c3.1-17.3,6.1-34.6,9.1-51.8c0.3-1.8,0.7-3.6,0.9-5.4c0.1-0.8,0.4-1,1.2-1c5.3,0,10.6,0.1,15.8,0c1,0,1.1,0.3,0.9,1.1
+	c-1,5.7-2,11.3-3,17c-1.6,8.8-3.1,17.7-4.7,26.5c-0.2,0.9,0.1,1,1,1c5.8,0,11.7,0,17.5,0C403.1,111.1,403.4,111.1,403.8,111.1z"/>
+<path class="st1" d="M207.8,125c-2.7,0-5.4,0-8,0c-0.7,0-1-0.1-0.8-0.9c3.2-17.9,6.3-35.7,9.5-53.6c0.3-2,0.7-3.9,1-5.9
+	c0.1-0.7,0.4-0.9,1.1-0.9c5.4,0,10.7,0,16.1,0c0.9,0,0.9,0.4,0.8,1.1c-1.2,6.9-2.5,13.8-3.7,20.7c-1.7,9.3-3.3,18.7-4.9,28
+	c-0.6,3.5-1.3,7.1-1.9,10.6c-0.1,0.7-0.4,0.9-1.1,0.9C213.1,125,210.4,125,207.8,125z"/>
+<path class="st1" d="M130.5,88.9c1.2-2.4,2.6-4.5,4.4-6.1c4.3-4,9.2-4.6,14.6-2.8c2,0.7,2,0.9,1.7,3.1c-0.7,4-1.3,8-2,12.1
+	c-1.5-0.6-3-1.2-4.7-1.5c-3.4-0.7-6.3,0.2-8.7,2.6c-3.5,3.5-5.4,7.7-6.1,12.6c-0.7,5.1-1.8,10.2-2.6,15.3c-0.1,0.7-0.4,0.9-1.1,0.9
+	c-5.3,0-10.6,0-16,0c-0.9,0-1-0.3-0.9-1.1c1.1-6.1,2.2-12.3,3.2-18.4c1.4-8,2.8-15.9,4.2-23.9c0.3-1.8,0.3-1.8,2.1-1.8
+	c3.4,0,6.7,0,10.1,0c0.7,0,1,0.2,1.1,1C129.9,83.4,130.2,86,130.5,88.9z"/>
+<path class="st1" d="M94.2,125c-2.7,0-5.4,0-8,0c-0.7,0-0.9-0.1-0.8-0.9c2.5-14.4,5.1-28.8,7.6-43.1c0.1-0.8,0.3-1.1,1.3-1.1
+	c5.2,0.1,10.5,0.1,15.7,0c1,0,1.1,0.3,1,1.2c-1.4,7.9-2.8,15.7-4.1,23.6c-1.1,6.2-2.2,12.5-3.3,18.7c-0.3,1.6-0.3,1.6-2,1.6
+	C99.1,125,96.7,125,94.2,125z"/>
+<path class="st1" d="M389.8,154.7c0-5.3,0-10.6,0-15.9c0-1.1,0.4-1.5,1.4-1.5c1.4,0,1.5,0.1,1.5,1.6c0,6,0,12.1,0,18.1
+	c0,0.8,0.2,1.7-0.8,2.1s-2.5,0.1-3.2-0.7c-0.4-0.5-0.7-1-1-1.5c-2.7-5.1-5.4-10.2-8.1-15.3c-0.1-0.2-0.1-0.4-0.4-0.4
+	c0,5.5,0,11.1,0,16.6c0,1.1-0.4,1.5-1.4,1.5c-1.4,0-1.6-0.2-1.6-1.6c0-6.1,0-12.2,0-18.3c0-1.7,0.2-1.9,1.9-2
+	c1.7-0.1,2.7,0.6,3.5,2.1c2.5,4.9,5.1,9.7,7.6,14.5C389.4,154.2,389.4,154.6,389.8,154.7z"/>
+<path class="st1" d="M112.7,148.1c0,1.4-0.1,2.7-0.4,4c-1.5,6.1-6.1,7.9-11,7.3c-4.8-0.6-7.3-3.4-7.8-8.2c-0.3-2.2-0.3-4.4,0.2-6.5
+	c1.2-5.2,5.1-8.1,10.4-7.6c5.3,0.5,8.3,3.6,8.6,8.9C112.7,146.7,112.7,147.4,112.7,148.1z M109.6,148.2c0-1.1-0.1-2.1-0.3-3.2
+	c-0.6-3.3-2.7-5.2-5.7-5.3c-3.6-0.1-6,1.6-6.8,4.9c-0.6,2.5-0.6,5.1,0,7.6c0.7,3,2.6,4.7,5.3,4.8c3.6,0.2,5.9-1.2,6.9-4.3
+	C109.5,151.2,109.6,149.7,109.6,148.2z"/>
+<path class="st1" d="M61.7,148.6c1.3,0.7,2,1.8,2.5,3c0.9,2.1,1.7,4.2,2.6,6.3c0.4,1,0,1.3-0.9,1.3c-1.2,0.1-2-0.2-2.4-1.5
+	c-0.6-2-1.4-3.9-2.3-5.8c-1-2.1-3-3-5.3-2.6c-0.7,0.1-0.4,0.6-0.4,0.9c0,2.5-0.1,5,0,7.4c0,1.2-0.5,1.5-1.6,1.5
+	c-1,0-1.5-0.3-1.5-1.4c0.1-6.2,0-12.4,0-18.6c0-1.7,0.2-1.9,1.9-1.9c2.2,0,4.3-0.2,6.5,0.2c2.9,0.5,4.6,2.2,4.9,4.7
+	c0.4,2.9-0.7,4.7-3.5,6.1C62,148.4,61.9,148.5,61.7,148.6z M57.6,139.9c-2.2,0-2.2,0-2.2,2.2c0,0.6,0,1.2,0,1.8
+	c0.1,1.1-0.5,2.6,0.2,3.1c1,0.6,2.6,0.3,3.8,0.1c2.1-0.4,3.2-1.8,3.1-3.9c-0.1-2-1.3-3.1-3.5-3.3C58.5,139.8,58.1,139.9,57.6,139.9z
+	"/>
+<path class="st1" d="M179.7,148.4c0-3,0-6.1,0-9.1c0-1.6,0.2-1.8,1.8-1.8c3,0,6,0,9,0c1,0,1.3,0.4,1.3,1.3s-0.3,1.3-1.3,1.2
+	c-2.3-0.1-4.6,0-7,0c-0.6,0-0.8,0.1-0.8,0.8c0,1.7,0.1,3.4,0,5.2c0,0.7,0.3,0.8,0.9,0.8c1.9,0,3.8,0,5.8,0c0.9,0,1.2,0.4,1.2,1.2
+	c0,0.8-0.2,1.2-1.1,1.2c-2-0.1-3.9,0-5.9,0c-0.6,0-0.8,0.1-0.8,0.8c0,2,0,4.1,0,6.1c0,0.7,0.2,0.9,0.9,0.9c2.4,0,4.7,0,7.1,0
+	c1,0,1.2,0.4,1.2,1.3c0,0.8-0.3,1.2-1.2,1.2c-3.1,0-6.2,0-9.2,0c-1.5,0-1.8-0.3-1.8-1.8C179.7,154.4,179.7,151.4,179.7,148.4z"/>
+<path class="st1" d="M224.5,159.6c-2-0.1-3.5-0.4-5-1.1c-1-0.5-1.4-1.2-1.3-2.3c0.1-1.1,0.3-1.2,1.3-0.7c1.6,0.9,3.2,1.6,5.1,1.5
+	c2-0.1,3.4-1,3.8-2.5c0.5-1.8-0.1-3.1-2.1-4.2c-1.5-0.8-3-1.4-4.5-2.3c-1.7-1-2.9-2.4-3-4.5c-0.3-4.1,2.6-6.7,6.9-6.4
+	c1.3,0.1,2.5,0.4,3.7,1c0.4,0.2,0.8,0.4,0.9,0.9c0.1,0.7,0.3,1.5-0.2,2s-1.1-0.2-1.6-0.5c-1.3-0.6-2.6-1-4-0.8
+	c-1.2,0.1-2.2,0.7-2.6,1.8c-0.5,1.2-0.2,2.4,0.8,3.3c0.6,0.6,1.4,1.1,2.2,1.4c1.1,0.5,2.2,1,3.3,1.6c2.7,1.5,3.7,3.5,3.3,6.4
+	c-0.3,2.5-2.3,4.4-5,5C225.7,159.4,224.9,159.6,224.5,159.6z"/>
+<path class="st1" d="M507,159.5c-1.7-0.1-3.2-0.4-4.7-1.2c-0.5-0.3-1-0.6-1.1-1.2s-0.3-1.4,0.2-1.8c0.5-0.5,1,0.2,1.5,0.4
+	c1.9,1,3.8,1.6,6,1c1.3-0.4,2.2-1.2,2.5-2.6c0.3-1.5-0.2-2.6-1.5-3.5c-0.9-0.6-1.8-1-2.8-1.4c-1.1-0.5-2.2-1.1-3.2-1.8
+	c-1.9-1.5-2.6-3.5-2.1-5.9c0.4-2.2,1.9-3.5,4.1-4.1c2.2-0.6,4.3-0.4,6.3,0.6c1,0.5,1.5,1.7,1.1,2.7c-0.3,0.7-0.7,0.3-1.1,0.1
+	c-1.3-0.8-2.7-1.3-4.3-1.2c-1.6,0.1-2.6,0.8-3,2.1c-0.4,1.4,0,2.5,1.3,3.5c0.8,0.6,1.8,1,2.7,1.5c0.8,0.4,1.6,0.8,2.4,1.2
+	c2.7,1.5,3.7,3.5,3.2,6.5c-0.3,2.4-2.4,4.4-5.1,5C508.6,159.4,507.8,159.6,507,159.5z"/>
+<path class="st1" d="M263.3,159.5c-1.7,0-3.4-0.4-4.9-1.2c-0.9-0.5-1.3-1.8-0.9-2.7c0.3-0.7,0.8-0.3,1.2-0.1c1.6,1,3.3,1.6,5.2,1.5
+	c2-0.1,3.3-1,3.7-2.6c0.4-1.7-0.2-3-2-4c-1.5-0.8-3.1-1.5-4.6-2.3c-2.9-1.7-4-4.9-2.5-7.7c1.2-2.4,3.5-3.1,5.9-3.2
+	c1.4-0.1,2.8,0.3,4.1,0.9c1,0.5,1.5,1.7,1,2.7c-0.3,0.7-0.7,0.3-1.1,0.1c-1.4-0.8-2.8-1.3-4.4-1.2c-1.4,0.1-2.5,0.8-2.9,1.9
+	c-0.4,1.4,0,2.5,1,3.4c0.7,0.6,1.5,1,2.2,1.4c1,0.5,2,0.9,3,1.5c2.6,1.4,3.7,3.4,3.4,6.1c-0.4,2.8-2.1,4.7-4.9,5.4
+	C264.9,159.4,264.1,159.6,263.3,159.5z"/>
+<path class="st1" d="M140.6,148.5c0-3.1,0-6.2,0-9.4c0-1.5,0.2-1.7,1.7-1.7c2.8,0,5.7,0,8.5,0c1,0,1.2,0.4,1.2,1.3s-0.3,1.3-1.3,1.2
+	c-2.1-0.1-4.2,0-6.4,0c-0.7,0-0.9,0.1-0.9,0.9c0,1.9,0,3.8,0,5.8c0,0.6,0.2,0.8,0.8,0.8c2,0,4.1,0,6.1,0c1,0,1.1,0.5,1.1,1.2
+	c0,0.8-0.2,1.3-1.2,1.2c-2-0.1-4,0-6,0c-0.8,0-0.9,0.2-0.9,0.9c0,2.4-0.1,4.8,0,7.2c0,1.2-0.5,1.5-1.6,1.5c-1,0-1.5-0.3-1.5-1.4
+	C140.6,154.8,140.6,151.6,140.6,148.5z"/>
+<path class="st1" d="M465,148.1c0-3.1,0.1-6.2,0-9.2c0-1.2,0.4-1.6,1.5-1.6c1,0,1.5,0.3,1.5,1.5c-0.1,5.5,0,11.1-0.1,16.7
+	c0,1,0.2,1.3,1.2,1.3c2-0.1,4.1,0,6.1,0c0.9,0,1.1,0.5,1,1.2c0,0.7,0,1.4-1,1.4c-3,0-6,0-9,0c-0.9,0-1.3-0.5-1.3-1.4
+	C465,154.5,465,151.3,465,148.1z"/>
+<path class="st1" d="M301.1,148.3c0,3.3,0,6.5,0,9.8c0,1.3-0.7,1.2-1.5,1.2s-1.4-0.1-1.4-1.2c0-6.5,0-13.1,0-19.6
+	c0-1.2,0.7-1.2,1.5-1.2c0.7,0,1.5-0.1,1.5,1.1C301,141.7,301.1,145,301.1,148.3z"/>
+</svg></template>
+<script>// Parse lswifi scan output (its --json export or its text table) and render a nearby Wi-Fi report.
+// Runs in the browser (window.Lswifi) and in Node (require) for the tests.
+// Nothing here makes a network request: what people paste stays on their machine.
+(function (root, factory) {
+  if (typeof module === "object" && module.exports) module.exports = factory();
+  else root.Lswifi = factory();
+})(typeof self !== "undefined" ? self : this, function () {
+  "use strict";
+
+  const BANDS = ["2.4 GHz", "5 GHz", "6 GHz"];
+  // lswifi draws its table borders from random runs of these characters, two spaces apart.
+  const BORDER = /^[-=~+]+(?: {2,}[-=~+]+)+\s*$/;
+  const COLUMNS = {
+    "SSID": "ssid", "BSSID": "bssid", "RSSI": "rssi", "PHY": "phy", "CHANNEL": "channel", "FREQ.": "freq",
+    "SS": "streams", "AMENDMENTS": "amendments", "AUTH": "akm", "ENCRYPTION": "cipher", "PMF": "pmf",
+    "AP UPTIME": "uptime",
+  };
+  const GENERATIONS = ["Wi-Fi 7", "Wi-Fi 6E", "Wi-Fi 6", "Wi-Fi 5", "Wi-Fi 4"];
+  const LEVEL_LABELS = { good: "Healthy", watch: "Worth a look", info: "Context" };
+
+  // ---------------------------------------------------------------- parsing
+
+  function bandOf(freqGHz) {
+    if (freqGHz < 3) return "2.4 GHz";
+    if (freqGHz < 5.925) return "5 GHz";
+    return "6 GHz";
+  }
+
+  function generation(phy, band) {
+    if (phy === "be") return "Wi-Fi 7";
+    if (phy === "ax") return band === "6 GHz" ? "Wi-Fi 6E" : "Wi-Fi 6";
+    if (phy === "ac") return "Wi-Fi 5";
+    if (phy === "n") return "Wi-Fi 4";
+    return phy ? `802.11${phy}` : "";
+  }
+
+  function number(value) {
+    const n = parseFloat(value);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function record(fields) {
+    const freq = number(fields.freq) || 0;
+    const band = freq ? bandOf(freq) : "";
+    return {
+      ssid: fields.ssid || "",
+      bssid: (fields.bssid || "").toLowerCase(),
+      rssi: number(fields.rssi),
+      phy: fields.phy || "",
+      channel: number(fields.channel),
+      width: number(fields.width),
+      freq,
+      band,
+      generation: generation(fields.phy || "", band),
+      streams: number(fields.streams),
+      amendments: fields.amendments || [],
+      akm: fields.akm || "",
+      cipher: fields.cipher || "",
+      pmf: fields.pmf || "",
+      uptime: fields.uptime || "",
+      utilization: number(fields.utilization),
+      stations: number(fields.stations),
+    };
+  }
+
+  function fromJson(bss) {
+    const security = String(bss.security || "");
+    const slash = security.indexOf("/");
+    return record({
+      ssid: bss.ssid, bssid: bss.bssid, rssi: bss.rssi, phy: bss.phy_type, channel: bss.channel_number,
+      width: bss.channel_width, freq: bss.channel_frequency, streams: bss.spatial_streams,
+      amendments: bss.amendments, pmf: bss.pmf, uptime: bss.uptime, utilization: bss.utilization,
+      stations: bss.stations,
+      akm: slash < 0 ? security : security.slice(0, slash),
+      cipher: slash < 0 ? "" : security.slice(slash + 1),
+    });
+  }
+
+  function parseJson(text) {
+    let data;
+    try { data = JSON.parse(text); } catch (error) { return null; }
+    const rows = (Array.isArray(data) ? data : (data && data.scan_data) || []).flat(Infinity)
+      .filter(row => row && typeof row === "object" && "rssi" in row);
+    return {
+      records: rows.map(fromJson),
+      version: (data && data.lswifi && data.lswifi.version) || "",
+      timestamp: rows.length ? rows[0].timestamp || "" : "",
+    };
+  }
+
+  function columnStarts(border) {
+    return [...border.matchAll(/[-=~+]+/g)].map(m => m.index);
+  }
+
+  function cells(line, starts) {
+    // Slice by code point so an emoji in an SSID doesn't shift the columns after it.
+    const chars = Array.from(line);
+    return starts.map((start, i) => chars.slice(start, starts[i + 1]).join("").trim());
+  }
+
+  function parseTable(text) {
+    const lines = text.split(/\r?\n/);
+    const records = [];
+    for (let i = 0; i + 3 < lines.length; i++) {
+      if (!BORDER.test(lines[i]) || !BORDER.test(lines[i + 3])) continue;
+      const starts = columnStarts(lines[i]);
+      const keys = cells(lines[i + 1], starts).map(name => COLUMNS[name]);
+      for (i += 4; i < lines.length && !BORDER.test(lines[i]); i++) {
+        const fields = {};
+        cells(lines[i], starts).forEach((value, c) => { if (keys[c]) fields[keys[c]] = value === "--" ? "" : value; });
+        if (!/^-?\d+$/.test(fields.rssi || "")) continue;
+        const [channel, width] = (fields.channel || "").split("@");
+        records.push(record({
+          ...fields, channel, width,
+          amendments: fields.amendments ? fields.amendments.split("/") : [],
+        }));
+      }
+      i--;
+    }
+    return { records, version: "", timestamp: "" };
+  }
+
+  function parse(text) {
+    const trimmed = (text || "").trim();
+    if (/^[[{]/.test(trimmed)) return parseJson(trimmed) || { records: [], version: "", timestamp: "" };
+    return parseTable(trimmed);
+  }
+
+  // ---------------------------------------------------------------- analysis
+
+  function plural(n, word) {
+    return `${n} ${word}${n === 1 ? "" : "s"}`;
+  }
+
+  function groupBy(items, key) {
+    const groups = new Map();
+    for (const item of items) {
+      const k = key(item);
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(item);
+    }
+    return groups;
+  }
+
+  function channelUse(records) {
+    const out = {};
+    for (const band of BANDS) {
+      const inBand = records.filter(r => r.band === band && r.channel !== null);
+      if (!inBand.length) continue;
+      out[band] = [...groupBy(inBand, r => r.channel)].map(([channel, rs]) => ({
+        channel, count: rs.length, strongest: Math.max(...rs.map(r => r.rssi)), width: Math.max(...rs.map(r => r.width || 0)),
+      })).sort((a, b) => a.channel - b.channel);
+    }
+    return out;
+  }
+
+  function bestGeneration(rs) {
+    const gens = rs.map(r => r.generation);
+    return GENERATIONS.find(g => gens.includes(g)) || gens.find(Boolean) || "";
+  }
+
+  function networks(records) {
+    return [...groupBy(records, r => r.ssid)].map(([ssid, rs]) => ({
+      ssid,
+      bssids: rs.length,
+      bands: BANDS.filter(b => rs.some(r => r.band === b)),
+      best: Math.max(...rs.map(r => r.rssi)),
+      generation: bestGeneration(rs),
+      security: [...new Set(rs.map(r => r.akm).filter(Boolean))].join("; "),
+      pmf: [...new Set(rs.map(r => r.pmf).filter(Boolean))].join("; "),
+      roaming: Object.fromEntries(["k", "v", "r"].map(a => [a, rs.some(r => r.amendments.includes(a))])),
+    }));
+  }
+
+  function channelList(rs) {
+    return [...new Set(rs.map(r => r.channel))].sort((a, b) => a - b).map(c => `channel ${c}`).join(", ");
+  }
+
+  function findings(records, redacted) {
+    const out = [];
+    const add = (id, level, title, text) => out.push({ id, level, title, text });
+    const two = records.filter(r => r.band === "2.4 GHz");
+
+    if (redacted) {
+      add("location", "watch", "macOS hid the network details",
+        "Without a Location Services grant, macOS gives lswifi only signal and channel: no network names, BSSIDs, security or capabilities. The fix is in the box above; signal and channel use in this report are still real.");
+    }
+    const offGrid = two.filter(r => ![1, 6, 11].includes(r.channel));
+    if (offGrid.length) {
+      add("off-grid", "watch", "2.4 GHz networks between 1, 6 and 11",
+        `${plural(offGrid.length, "BSSID")} on ${channelList(offGrid)}. A 2.4 GHz channel between 1, 6 and 11 overlaps the channels on both sides of it, so it collides with more networks than it would on 1, 6 or 11 (in countries that use the 1, 6, 11 plan).`);
+    }
+    const wide = two.filter(r => r.width >= 40);
+    if (wide.length) {
+      add("wide-24", "watch", "40 MHz channels in 2.4 GHz",
+        `${plural(wide.length, "BSSID")} at 40 MHz in 2.4 GHz (${channelList(wide)}). 2.4 GHz has room for only three non-overlapping 20 MHz channels, so a 40 MHz channel there takes most of the band.`);
+    }
+    if (!redacted) {
+      const open = records.filter(r => /^(NONE\??|OPEN)$/i.test(r.akm));
+      if (open.length) {
+        add("open", "watch", "Open networks",
+          `${plural(open.length, "BSSID")} with no encryption: anyone in range can read unencrypted traffic.` +
+          (open.some(r => r.akm === "NONE?") ? " On a Mac, NONE? means open or WEP: macOS doesn't say which." : ""));
+      }
+      const wep = records.filter(r => r.akm === "WEP" || /WEP/.test(r.cipher));
+      if (wep.length) {
+        add("wep", "watch", "WEP networks", `${plural(wep.length, "BSSID")} on WEP, which has been breakable in minutes since the mid-2000s.`);
+      }
+      const tkip = records.filter(r => /TKIP/.test(r.cipher));
+      if (tkip.length) {
+        add("tkip", "watch", "TKIP still offered",
+          `TKIP is offered on ${plural(tkip.length, "BSSID")}. The Wi-Fi Alliance deprecated it, and clients that use it are held to 802.11a/g rates (54 Mbps).`);
+      }
+    }
+    const busy = records.filter(r => r.utilization !== null && r.utilization >= 50);
+    if (busy.length) {
+      add("busy", "watch", "Busy channels",
+        busy.map((r, i) => `${i ? "channel" : "Channel"} ${r.channel}: ${r.utilization}%`).join(", ") +
+        ". Channel utilization from the BSS Load element, as each AP reports it. Above about half is a rule of thumb for crowded, not a hard limit.");
+    }
+    const six = records.filter(r => r.band === "6 GHz");
+    if (six.length) {
+      add("six", "info", "6 GHz in range", `${plural(six.length, "BSSID")} on 6 GHz. Only Wi-Fi 6E and Wi-Fi 7 clients can use them.`);
+    }
+    return out;
+  }
+
+  function analyze(parsed) {
+    const records = [...parsed.records].sort((a, b) => b.rssi - a.rssi);
+    const redacted = records.length > 0 && records.every(r => !r.bssid);
+    const bands = {};
+    for (const band of BANDS) {
+      const n = records.filter(r => r.band === band).length;
+      if (n) bands[band] = n;
+    }
+    return {
+      empty: records.length === 0,
+      redacted,
+      version: parsed.version,
+      timestamp: parsed.timestamp,
+      records,
+      counts: {
+        bssids: records.length,
+        networks: redacted ? 0 : new Set(records.map(r => r.ssid).filter(Boolean)).size,
+        hidden: redacted ? 0 : records.filter(r => !r.ssid).length,
+        bands,
+        strongest: records[0] || null,
+      },
+      channels: channelUse(records),
+      networks: redacted ? [] : networks(records),
+      findings: findings(records, redacted),
+    };
+  }
+
+  // ---------------------------------------------------------------- rendering
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  }
+
+  function signalClass(rssi) {
+    if (rssi >= -67) return "good";
+    if (rssi >= -75) return "fair";
+    return "weak";
+  }
+
+  function namer(records, redact) {
+    const aliases = new Map();
+    for (const r of records) if (r.ssid && !aliases.has(r.ssid)) aliases.set(r.ssid, `Network ${aliases.size + 1}`);
+    return ssid => {
+      if (!ssid) return "<span class=\"none\">hidden</span>";
+      return escapeHtml(redact ? aliases.get(ssid) : ssid);
+    };
+  }
+
+  function maskBssid(bssid, redact) {
+    if (!redact || !bssid) return escapeHtml(bssid);
+    // The first three octets are the vendor's OUI: useful, and the same on every AP that vendor makes.
+    return escapeHtml(bssid.split(":").slice(0, 3).join(":") + ":••:••:••");
+  }
+
+  function localTime(timestamp) {
+    const date = new Date(timestamp);
+    return Number.isNaN(date.getTime()) ? timestamp : date.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+  }
+
+  function render(report, options) {
+    const { redact, logo } = options;
+    const name = namer(report.records, redact);
+    const { counts } = report;
+
+    const meta = [
+      ["Scanned", report.timestamp ? escapeHtml(localTime(report.timestamp)) : "Time not in the paste"],
+      ["Source", report.version ? `<code>${escapeHtml(report.version)}</code>` : "<code>lswifi</code> text output"],
+      ["Heard", plural(counts.bssids, "BSSID")],
+    ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+    const head = `
+<header class="wr-head">
+  <div class="wr-logo" aria-label="WLAN Pros">${logo}</div>
+  <div class="wr-title"><p class="eyebrow">Wi-Fi scan report</p><h1>Nearby Wi-Fi</h1></div>
+  <dl class="wr-meta">${meta}</dl>
+</header>`;
+
+    const tile = (label, value, sub) =>
+      `<div class="tile"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></div>`;
+    const strongest = counts.strongest;
+    const tiles = `<section class="tiles">${[
+      tile("BSSIDs", counts.bssids, "AP radios heard"),
+      report.redacted ? tile("Networks", "?", "hidden by macOS") :
+        tile("Networks", counts.networks, counts.hidden ? `plus ${plural(counts.hidden, "hidden BSSID")}` : "by name"),
+      ...BANDS.filter(b => counts.bands[b]).map(b => tile(b, counts.bands[b], "BSSIDs")),
+      tile("Strongest", `${strongest.rssi} dBm`, report.redacted ? `channel ${strongest.channel}` : name(strongest.ssid)),
+    ].join("")}</section>`;
+
+    const notice = report.redacted ? `<section class="notice"><strong>macOS hid network names, BSSIDs and security.</strong>
+lswifi needs Location Services to see them; <code>sudo</code> does not help. Run it from the Terminal app (not a terminal inside another app), then open System Settings, Privacy &amp; Security, Location Services, and turn on Python (or Terminal, whichever is listed). Run the scan again.</section>` : "";
+
+    const findingsHtml = report.findings.map(f =>
+      `<li class="finding ${f.level}"><span class="chip">${LEVEL_LABELS[f.level]}</span>` +
+      `<div><h3>${escapeHtml(f.title)}</h3><p>${escapeHtml(f.text)}</p></div></li>`).join("");
+
+    const max = Math.max(1, ...Object.values(report.channels).flat().map(c => c.count));
+    const channelHtml = Object.entries(report.channels).map(([band, list]) => `<h3 class="band">${band}</h3>
+<div class="bars">${list.map(c => `<div class="bar-row"><span class="ch mono">${c.channel}</span>` +
+      `<span class="track"><span class="bar" style="width:${(c.count / max) * 100}%"></span></span>` +
+      `<span class="bar-note">${plural(c.count, "BSSID")} · strongest <span class="rssi ${signalClass(c.strongest)}">${c.strongest} dBm</span>` +
+      `${c.width ? ` · up to ${c.width} MHz` : ""}</span></div>`).join("")}</div>`).join("");
+
+    const yes = flag => flag ? "<span class=\"yes\">yes</span>" : "";
+    const networksHtml = report.networks.length ? `<section><h2>Networks</h2>
+<p class="lede">One row per network name. 11k, 11v and 11r are the roaming helpers an AP advertises; a row says yes when any of its BSSIDs does.</p>
+<table class="list"><thead><tr><th>Network</th><th>BSSIDs</th><th>Bands</th><th>Best</th><th>Generation</th><th>Security</th><th>PMF</th><th>11k</th><th>11v</th><th>11r</th></tr></thead><tbody>${
+      report.networks.map(n => `<tr><td>${name(n.ssid)}</td><td class="mono">${n.bssids}</td><td>${n.bands.join(", ")}</td>` +
+        `<td><span class="rssi ${signalClass(n.best)}">${n.best}</span></td><td>${escapeHtml(n.generation)}</td>` +
+        `<td class="mono">${escapeHtml(n.security)}</td><td>${escapeHtml(n.pmf)}</td>` +
+        `<td>${yes(n.roaming.k)}</td><td>${yes(n.roaming.v)}</td><td>${yes(n.roaming.r)}</td></tr>`).join("")
+    }</tbody></table></section>` : "";
+
+    const columns = [
+      ["Network", r => r.bssid ? name(r.ssid) : "", r => r.bssid],
+      ["BSSID", r => `<span class="mono">${maskBssid(r.bssid, redact)}</span>`, r => r.bssid],
+      ["RSSI", r => `<span class="rssi ${signalClass(r.rssi)}">${r.rssi}</span>`, () => true],
+      ["Band", r => r.band, r => r.band],
+      ["Channel", r => `<span class="mono">${r.channel}${r.width ? `@${r.width}` : ""}</span>`, r => r.channel !== null],
+      ["Generation", r => escapeHtml(r.generation), r => r.generation],
+      ["Security", r => `<span class="mono">${escapeHtml([r.akm, r.cipher].filter(Boolean).join(" / "))}</span>`, r => r.akm],
+      ["PMF", r => escapeHtml(r.pmf), r => r.pmf],
+      ["Load", r => r.utilization !== null ? `${r.utilization}%${r.stations !== null ? `, ${plural(r.stations, "client")}` : ""}` : "", r => r.utilization !== null],
+      ["Uptime", r => escapeHtml(r.uptime), r => r.uptime],
+    ].filter(([, , has]) => report.records.some(has));
+    const bssidHtml = `<section><h2>Every BSSID heard</h2>
+<p class="lede">Strongest first. RSSI is in dBm as this computer heard it: green from -67 up, amber to -75, red below (rules of thumb).</p>
+<table class="list bss"><thead><tr>${columns.map(([h]) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${
+      report.records.map(r => `<tr>${columns.map(([, cell]) => `<td>${cell(r)}</td>`).join("")}</tr>`).join("")
+    }</tbody></table></section>`;
+
+    return `<article class="wr">${head}${tiles}${notice}
+<section><h2>What stands out</h2><ul class="findings">${findingsHtml || "<li class=\"none\">Nothing to report.</li>"}</ul></section>
+<section><h2>Channel use</h2><p class="lede">How many BSSIDs this computer heard on each channel. More BSSIDs on one channel means more radios sharing its airtime.</p>${channelHtml}</section>
+${networksHtml}${bssidHtml}
+<footer class="wr-foot"><p>A snapshot of one scan from one spot, read from lswifi by Josh Schmelzle. A scan shows what the APs advertise, not how busy the air is minute to minute.</p><p>WLAN Pros · Keith Parsons, CWNE #3</p></footer>
+</article>`;
+  }
+
+  return { parse, analyze, render, bandOf, generation };
+});
+</script>
+<script>
+(function () {
+  const EXAMPLE = "{\n  \"lswifi\": {\n    \"version\": \"lswifi 0.3.0\"\n  },\n  \"scan_data\": [\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"d\",\n        \"e\",\n        \"h\",\n        \"i\",\n        \"k\",\n        \"v\",\n        \"w\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:01\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"6.135\",\n      \"channel_number\": \"37\",\n      \"channel_width\": \"160\",\n      \"connected\": true,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Required\",\n      \"phy_type\": \"ax\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-44\",\n      \"security\": \"SAE/CCMP-128/CCMP-128\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Example-Home\",\n      \"stations\": \"3\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"8%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"d\",\n        \"e\",\n        \"h\",\n        \"i\",\n        \"k\",\n        \"v\",\n        \"w\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:02\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"5.180\",\n      \"channel_number\": \"36\",\n      \"channel_width\": \"80\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Capable\",\n      \"phy_type\": \"ax\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-51\",\n      \"security\": \"PSK,SAE/CCMP-128/CCMP-128\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Example-Home\",\n      \"stations\": \"5\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"12%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"d\",\n        \"e\",\n        \"i\",\n        \"k\",\n        \"v\",\n        \"w\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:03\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"2.437\",\n      \"channel_number\": \"6\",\n      \"channel_width\": \"20\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Capable\",\n      \"phy_type\": \"ax\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-49\",\n      \"security\": \"PSK,SAE/CCMP-128/CCMP-128\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Example-Home\",\n      \"stations\": \"4\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"41%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"d\",\n        \"e\",\n        \"h\",\n        \"i\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:04\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"5.745\",\n      \"channel_number\": \"149\",\n      \"channel_width\": \"80\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Disabled\",\n      \"phy_type\": \"ac\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-71\",\n      \"security\": \"PSK/CCMP-128/CCMP-128\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Neighbor-5G\",\n      \"stations\": \"2\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"22%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"e\",\n        \"i\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:05\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"2.422\",\n      \"channel_number\": \"3\",\n      \"channel_width\": \"40\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Disabled\",\n      \"phy_type\": \"n\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-66\",\n      \"security\": \"PSK/CCMP-128,TKIP/TKIP\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Neighbor\",\n      \"stations\": \"9\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"63%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"e\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:06\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"2.462\",\n      \"channel_number\": \"11\",\n      \"channel_width\": \"20\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Disabled\",\n      \"phy_type\": \"n\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-74\",\n      \"security\": \"NONE\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Coffee-Guest\",\n      \"stations\": \"\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"e\",\n        \"i\",\n        \"k\",\n        \"v\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:07\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"2.412\",\n      \"channel_number\": \"1\",\n      \"channel_width\": \"20\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Disabled\",\n      \"phy_type\": \"ax\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-78\",\n      \"security\": \"PSK/CCMP-128/CCMP-128\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"\",\n      \"stations\": \"1\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"18%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"d\",\n        \"e\",\n        \"i\",\n        \"k\",\n        \"r\",\n        \"v\",\n        \"w\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:08\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"2.412\",\n      \"channel_number\": \"1\",\n      \"channel_width\": \"20\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Capable\",\n      \"phy_type\": \"ax\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-63\",\n      \"security\": \"FT-.1X,.1X/CCMP-128/CCMP-128\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Office-Corp\",\n      \"stations\": \"14\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"55%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [\n        \"d\",\n        \"e\",\n        \"h\",\n        \"i\",\n        \"k\",\n        \"r\",\n        \"v\",\n        \"w\"\n      ],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:09\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"5.220\",\n      \"channel_number\": \"44\",\n      \"channel_width\": \"40\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Capable\",\n      \"phy_type\": \"ax\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-69\",\n      \"security\": \"FT-.1X,.1X/CCMP-128/CCMP-128\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Office-Corp\",\n      \"stations\": \"6\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"9%\"\n    },\n    {\n      \"timestamp\": \"2026-10-24T18:42:08.709-06:00\",\n      \"interface_mac\": \"02:00:5e:00:00:01\",\n      \"amendments\": [],\n      \"apname\": \"\",\n      \"bssid\": \"02:00:5e:10:00:0a\",\n      \"bss_type\": \"Infrastructure\",\n      \"channel_frequency\": \"2.437\",\n      \"channel_number\": \"6\",\n      \"channel_width\": \"20\",\n      \"connected\": false,\n      \"country_code\": \"US\",\n      \"ies\": [],\n      \"ies_extension\": [],\n      \"modes\": [],\n      \"pmf\": \"Disabled\",\n      \"phy_type\": \"g\",\n      \"rates_basic\": [],\n      \"rates_data\": [],\n      \"rssi\": \"-80\",\n      \"security\": \"WEP\",\n      \"spatial_streams\": \"2\",\n      \"ssid\": \"Old-Printer\",\n      \"stations\": \"\",\n      \"uptime\": \"03d 4:12:09\",\n      \"utilization\": \"\"\n    }\n  ]\n}\n";
+  const PRELOADED = null;
+  const $ = id => document.getElementById(id);
+  const logo = $("logo").innerHTML;
+
+  function show() {
+    const text = $("input").value;
+    $("message").hidden = true;
+    if (!text.trim()) { $("report").innerHTML = ""; $("print").hidden = true; return; }
+    const report = Lswifi.analyze(Lswifi.parse(text));
+    if (report.empty) {
+      $("report").innerHTML = "";
+      $("print").hidden = true;
+      $("message").innerHTML = "<strong>That doesn't look like lswifi output.</strong> Run <code>lswifi --json | pbcopy</code> and paste again.";
+      $("message").hidden = false;
+      return;
+    }
+    $("report").innerHTML = Lswifi.render(report, { redact: $("redact").checked, logo });
+    $("print").hidden = false;
+  }
+
+  $("make").addEventListener("click", () => { show(); $("report").scrollIntoView({ behavior: "smooth" }); });
+  $("redact").addEventListener("change", show);
+  $("input").addEventListener("paste", () => setTimeout(show, 0));
+  $("example").addEventListener("click", () => { $("input").value = EXAMPLE; show(); $("report").scrollIntoView({ behavior: "smooth" }); });
+  $("print").addEventListener("click", () => window.print());
+  $("copy-command").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("command").textContent); $("copy-command").textContent = "Copied"; }
+    catch (error) { $("copy-command").textContent = "Select and copy"; }
+  });
+  if (PRELOADED) { $("input").value = PRELOADED; $("redact").checked = true; show(); }
+})();
+</script>
+</body>
+</html>
